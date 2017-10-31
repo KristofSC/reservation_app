@@ -1,0 +1,29 @@
+AppBundle\Entity\Patient:
+    type: entity
+    table: null
+    repositoryClass: AppBundle\Repository\PatientRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        firstname:
+            type: string
+            length: 255
+            nullable: true
+        lastname:
+            type: string
+            length: 255
+            nullable: true
+        ssNumber:
+            type: integer
+            nullable: true
+            unique: true
+            column: ss_number
+    oneToMany:
+      reservations:
+        targetEntity: Reservation
+        mappedBy: patient
+    lifecycleCallbacks: {  }

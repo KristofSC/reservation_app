@@ -1,0 +1,20 @@
+<table border="1">
+    <thead>
+        <th>Óra</th>
+        <th>Foglalás</th>
+    </thead>
+    <tbody>
+    {% for i in 4..16 %}
+        <tr>
+            <td>{{ i }}</td>
+            {% if reserved[i] is defined %}
+                <td>Foglalt</td>
+            {% else %}
+                <td><input type="button" class="hourSelectorButton" value="Foglalom" data-hour="{{ i }}"></td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+
+    </tbody>
+
+</table>

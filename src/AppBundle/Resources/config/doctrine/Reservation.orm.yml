@@ -1,0 +1,19 @@
+AppBundle\Entity\Reservation:
+    type: entity
+    table: null
+    repositoryClass: AppBundle\Repository\ReservationRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        reservation_time:
+            type: datetime
+            unique: true
+    manyToOne:
+      patient:
+        targetEntity: Patient
+        inversedBy: reservations
+    lifecycleCallbacks: {  }
