@@ -2,47 +2,63 @@
 
 {% block surgerySelectBlock %}
 
-    <select id="surgeySelector">
+    <select id="surgerySelector">
         <option value="">Kérem válasszon!</option>
-        {% for surgery in surgeries %}
-            <option value="{{ surgery }}">{{ surgery }}</option>
+        {% for key, surgery in surgeries %}
+            <option value="{{ key }}">{{ surgery }}</option>
         {% endfor %}
 
     </select>
 
+{% endblock %}
 
-    <div id="step2" style="display: none;">
-     <br>
-     <button class="ajax">Klikk!</button>
+{% block datepicker %}
+    <br>
+    <div id="step1" style="display:none;">
+        <p>Dátum választása: <input type="text" id="datepicker"></p>
     </div>
 
-    <div id="times"></div>
+{% endblock %}
 
-
-    <div id="step3" style="display: none;">
-    <form>
-
-        <input type="text" id="hour">
-        <input type="text" id="surgey">
-
-
-        <input type="text" name="name">
-        <input type="text" name="phone">
-        <input type="text" name="taj">
-
-        <input type="submit">
-
-
-    </form>
-
+{% block select_button %}
+    <div id="step2" style="display: none;">
+        <br>
+        <button id="toTableButton">Klikk!</button>
     </div>
 
 {% endblock %}
 
 {% block reservation_table %}
 
-    <div id="step1" style="display:none;">
-        <p>Dátum választása: <input type="text" id="datepicker"></p>
+    <div id="table" style="display: none">
+
+        <table border="1">
+            <thead>
+            <th>Óra</th>
+            <th>Foglalás</th>
+            </thead>
+            <tbody>
+            {% for i in 8..15 %}
+                <tr>
+                    <td>{{ i }}:00</td>
+                    {% if reserved[i] is defined %}
+                        <td>Foglalt</td>
+                    {% else %}
+                        <td><input type="button" id="reservationButton" value="Foglalom" data-hour="{{ i }}"></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
     </div>
+
+{% endblock %}
+
+{% block formBlock %}
+
+    <div id="reservationForm"></div>
 
 {% endblock %}

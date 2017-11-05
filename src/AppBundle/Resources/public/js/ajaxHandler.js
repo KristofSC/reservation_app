@@ -1,22 +1,18 @@
-$(document).on('click', 'button.ajax', function(){
-
-    $('#times').load('/reservation_table?date='+$('#datepicker').val()+'&surgey='+$('#surgeySelector').val());
-
-});
-
-
 $(document).ready(function() {
 
-    $(document).on('click','.hourSelectorButton',function() {
-       $('#hour').val($(this).data('hour'));
-       $('#step3').show();
-
-    });
-
-    $(document).on('change','#surgeySelector',function() {
-        $('#surgey').val($(this).val());
+    $(document).on('change','#surgerySelector',function() {
+        $('#surgery').val($(this).val());
         $('#step1').show();
         $('#step2').show();
+    });
+
+    $(document).on('click','#toTableButton',function() {
+        $('#table').show();
+    });
+
+    $(document).on('click','#reservationButton',function() {
+        $('#reservationForm').load('/reservation_table?date='+$('#datepicker').val()+'&surgery='+$('#surgerySelector').val()+'&hour='+$(this).data('hour'));
+
     });
 
 });

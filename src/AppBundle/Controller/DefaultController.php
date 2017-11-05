@@ -3,23 +3,20 @@
 namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Form\SelectCategoryType;
+use AppBundle\Form\PatientDataType;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 class DefaultController extends Controller
 {
     public function indexAction(Request $request): Response
     {
-        $selectForm = $this->createForm(SelectCategoryType::class);
-
         $surgeries = $this->getSurgeries();
 
-        // replace this example code with whatever you need
         return $this->render('AppBundle::index.html.twig', [
             'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
-            'selectForm' => $selectForm->createView(),
             'surgeries' => $surgeries
         ]);
     }
@@ -27,26 +24,30 @@ class DefaultController extends Controller
     public function tableContentAction(Request $request): Response
     {
 
-        $date = $request->get('date');
+        $reservationRepository = $this->getDoctrine()->getRepository('AppBundle:Reservation');
 
-        $reservations = $this->getDoctrine()->getRepository('AppBundle:ReservationDay')->findAll();
+        //$repository->getEntitiesForDay();
 
-        $repository = $this->getDoctrine()->getRepository('AppBundle:ReservationDay');
+        $selectForm = $this->createForm(PatientDataType::class);
 
-        $repository->getEntitiesForDay();
+        $selectedSurgery = $request->get('surgery');
+        $selectedDate = $request->get('date');
+        $selectedHour = $request->get('hour');
+
+        $selectForm->get('surgeryName')->setData($selectedSurgery);
+        $selectForm->get('dateDay')->setData(new \DateTime($selectedDate));
 
 
-        $reserved = [];
+
 
 
         // adatbázisból kikérni a maiakat
         // végigjárod
         // a $reserved tömbbe az óra alapján csinálsz egy értéket
-        $reserved[12] = true;
-        $reserved[13] = true;
+
 
         return $this->render('AppBundle::timeTable.html.twig',[
-            'reserved' => $reserved
+            'selectForm' => $selectForm->createView()
         ]);
     }
 
@@ -56,5 +57,3 @@ class DefaultController extends Controller
     }
 
 }
-
-

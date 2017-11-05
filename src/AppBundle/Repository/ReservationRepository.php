@@ -11,7 +11,7 @@ namespace AppBundle\Repository;
 class ReservationRepository extends \Doctrine\ORM\EntityRepository
 {
 
-    public function getValamiForValmai(int $day, string $rendelo)
+    public function getValamiForValmai()
     {
 
         return $this->createQueryBuilder()->where();

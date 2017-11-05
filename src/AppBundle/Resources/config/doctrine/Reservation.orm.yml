@@ -9,7 +9,7 @@ AppBundle\Entity\Reservation:
             generator:
                 strategy: AUTO
     fields:
-        reservation_time:
+        reservation_day:
             type: datetime
             unique: true
     manyToOne:
