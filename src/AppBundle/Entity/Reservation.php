@@ -23,6 +23,11 @@ class Reservation
     private $hour;
 
     /**
+     * @var string
+     */
+    private $surgery;
+
+    /**
      * @var Patient
      */
     private $patient;
@@ -60,6 +65,16 @@ class Reservation
     public function setPatient($patient): void
     {
         $this->patient = $patient;
+    }
+
+    public function getSurgery(): string
+    {
+        return $this->surgery;
+    }
+
+    public function setSurgery(string $surgery): void
+    {
+        $this->surgery = $surgery;
     }
 
 }

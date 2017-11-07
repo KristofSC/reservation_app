@@ -29,12 +29,21 @@ class PatientDataType extends AbstractType
                           'disabled' => true
                       ]
             ] )
+                ->add('lastName', TextType::class,
+                [
+                    'label' => 'Vezetéknév: ',
+                ])
+                ->add('firstName', TextType::class,
+                [
+                    'label' => 'Keresztnév: ',
+                ])
                 ->add('SSNumber', TextType::class,
                     [
                       'label' => 'TAJ kártya száma: ',
                     ])
                 ->add('phoneNumber', TextType::class,
                     [
+                        'required' => false,
                        'label' => 'Telefonszám: '
                     ])
                 ->add('email', EmailType::class,

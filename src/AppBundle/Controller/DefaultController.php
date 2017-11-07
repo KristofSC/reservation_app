@@ -2,12 +2,11 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Reservation;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\PatientDataType;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Validator\Constraints\DateTime;
 
 class DefaultController extends Controller
 {
@@ -21,35 +20,61 @@ class DefaultController extends Controller
         ]);
     }
 
+
+
     public function tableContentAction(Request $request): Response
     {
 
         $reservationRepository = $this->getDoctrine()->getRepository('AppBundle:Reservation');
 
-        //$repository->getEntitiesForDay();
 
         $selectForm = $this->createForm(PatientDataType::class);
 
         $selectedSurgery = $request->get('surgery');
         $selectedDate = $request->get('date');
-        $selectedHour = $request->get('hour');
 
         $selectForm->get('surgeryName')->setData($selectedSurgery);
-        $selectForm->get('dateDay')->setData(new \DateTime($selectedDate));
+        $dateTimeObject = new \DateTime($selectedDate);
+        $selectForm->get('dateDay')->setData($dateTimeObject);
+
+        if($request->query->has('hour')){
+
+            $em = $this->getDoctrine()->getManager();
+
+            $reservationObject = new Reservation();
+            $selectedHour = $request->get('hour');
+
+            $reservationObject->setDay($dateTimeObject);
+            $reservationObject->setHour($selectedHour);
+            $reservationObject->setSurgery($selectedSurgery);
 
 
+            $em->persist($reservationObject);
+            $em->flush();
 
 
+            return $this->render('AppBundle::patientForm.html.twig',[
+                'selectForm' => $selectForm->createView()
+            ]);
+        }
 
-        // adatbázisból kikérni a maiakat
-        // végigjárod
-        // a $reserved tömbbe az óra alapján csinálsz egy értéket
+        $reservedDays = $reservationRepository->findReservedDays($dateTimeObject, $selectedSurgery);
+
+        $reservedHours = [];
+        if($reservedDays = $reservedDays->getResult()) {
+            foreach ($reservedDays as $reservedDay)
+            {
+                $reservedHours[$reservedDay->getHour()] = $reservedDay;
+            }
+        }
 
 
         return $this->render('AppBundle::timeTable.html.twig',[
-            'selectForm' => $selectForm->createView()
+                'reserved' => $reservedHours
         ]);
-    }
+
+}
+
 
     public function  getSurgeries(): array
     {

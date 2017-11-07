@@ -11,7 +11,10 @@ AppBundle\Entity\Reservation:
     fields:
         reservation_day:
             type: datetime
-            unique: true
+        hour:
+            type: integer
+        surgery:
+            type: string
     manyToOne:
       patient:
         targetEntity: Patient

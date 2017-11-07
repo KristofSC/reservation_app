@@ -14,49 +14,25 @@
 
 {% block datepicker %}
     <br>
-    <div id="step1" style="display:none;">
+    <div id="dateSelector" style="display:none;">
         <p>Dátum választása: <input type="text" id="datepicker"></p>
     </div>
 
 {% endblock %}
 
 {% block select_button %}
-    <div id="step2" style="display: none;">
+    <div id="forwardButton" style="display: none;">
         <br>
         <button id="toTableButton">Klikk!</button>
     </div>
 
 {% endblock %}
 
-{% block reservation_table %}
+{% block tableBlock %}
 
-    <div id="table" style="display: none">
-
-        <table border="1">
-            <thead>
-            <th>Óra</th>
-            <th>Foglalás</th>
-            </thead>
-            <tbody>
-            {% for i in 8..15 %}
-                <tr>
-                    <td>{{ i }}:00</td>
-                    {% if reserved[i] is defined %}
-                        <td>Foglalt</td>
-                    {% else %}
-                        <td><input type="button" id="reservationButton" value="Foglalom" data-hour="{{ i }}"></td>
-                    {% endif %}
-                </tr>
-            {% endfor %}
-
-            </tbody>
-
-        </table>
-
-    </div>
+    <div id="reservationTable"></div>
 
 {% endblock %}
-
 {% block formBlock %}
 
     <div id="reservationForm"></div>
