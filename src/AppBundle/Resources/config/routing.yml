@@ -1,4 +1,3 @@
 app_reservations:
     resource: "@AppBundle/Resources/config/routing/reservationday.yml"
     prefix:   /reservations
-

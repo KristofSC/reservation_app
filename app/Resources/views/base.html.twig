@@ -2,9 +2,12 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}Rezervátor!{% endblock %}</title>
         {% block stylesheets %}
             <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+            <link rel="stylesheet" href="{{ 'css/design.css' }}">
+
         {% endblock %}
         {% block javascripts %}
             {% javascripts '@AppBundle/Resources/public/js/*' %}
@@ -15,17 +18,24 @@
             </script>
             <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
             <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
             <script src="{{ asset_url }}"></script>
             {% endjavascripts %}
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
+
+    <h1 >-rezervátor-</h1>
+    <h3 >orvosi időpontfoglaló alkalmazás</h3>
+
+    <div class="container-fluid jumbotron">
         {% block body %}{% block surgerySelectBlock %}{% endblock %}{% endblock %}
         {% block datepicker %}{% endblock %}
         {% block select_button %}{% endblock %}
         {% block tableBlock %}{% endblock %}
         {% block formBlock %}{% endblock %}
-
+        {% block reservationSuccess %}{% endblock %}
+    </div>
     </body>
 </html>

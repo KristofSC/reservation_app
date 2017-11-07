@@ -5,3 +5,11 @@ homepage:
 reservation_table:
     path: /reservation_table
     defaults: { _controller: "AppBundle:Default:tableContent" }
+
+patient_form:
+    path: /patient_form
+    defaults: { _controller: "AppBundle:Default:patientForm" }
+
+reservation_success:
+    path: /reservation_success
+    defaults: { _controller: "AppBundle:Default:reservationSuccess"}

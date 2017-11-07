@@ -1,7 +1,9 @@
+{% form_theme patientForm 'bootstrap_3_layout.html.twig' %}
+
 {% block reservation_form %}
 
-    {{ form_start(selectForm) }}
-    {{ form_widget(selectForm) }}
-    {{ form_end(selectForm) }}
+    {{ form_start(patientForm) }}
+    {{ form_widget(patientForm) }}
+    {{ form_end(patientForm) }}
 
 {% endblock %}

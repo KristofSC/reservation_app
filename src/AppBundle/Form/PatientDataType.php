@@ -15,20 +15,20 @@ class PatientDataType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('surgeryName',TextType::class,
-                    [
-                      'label' => 'Rendelő neve: ',
-                      'attr' => [
-                          'disabled' => true
-                      ]
+        $builder
+                ->add('surgeryName', HiddenType::class,
+                [
+                    'label' => 'Rendelő: ',
+
                 ])
-                ->add('dateDay', DateTimeType::class,
-                    [
-                      'label' => 'Foglalás ideje: ',
-                      'attr' => [
-                          'disabled' => true
-                      ]
-            ] )
+                ->add('reservationDate', HiddenType::class,
+                [
+                    'label' => 'Foglalás napja: ',
+                ])
+                ->add('reservationHour', HiddenType::class,
+                [
+                    'label' => 'Óra: ',
+                ])
                 ->add('lastName', TextType::class,
                 [
                     'label' => 'Vezetéknév: ',
@@ -50,9 +50,14 @@ class PatientDataType extends AbstractType
                     [
                         'label' => 'E-mail cím: '
                     ])
+                ->setMethod('POST')
+                ->setAction('reservation_success')
                 ->add('submitButton', SubmitType::class,
                     [
-                        'label' => 'Lefoglalom!'
+                        'label' => 'Lefoglalom!',
+                        'attr' => [
+                            'class' => 'btn btn-success'
+                        ]
                     ]);
     }
 

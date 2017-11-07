@@ -1,29 +1,27 @@
 {% extends 'base.html.twig' %}
 
 {% block surgerySelectBlock %}
-
-    <select id="surgerySelector">
-        <option value="">Kérem válasszon!</option>
-        {% for key, surgery in surgeries %}
-            <option value="{{ key }}">{{ surgery }}</option>
-        {% endfor %}
-
-    </select>
+<div class="container-fluid">
+    <div class="form-group">
+        <select id="surgerySelector" class="form-control col-sm-4 col-offset-2">
+            <option value="">Kérem válasszon!</option>
+            {% for key, surgery in surgeries %}
+                <option value="{{ key }}">{{ surgery }}</option>
+            {% endfor %}
+        </select>
+    <div>
+</div>
 
 {% endblock %}
 
 {% block datepicker %}
-    <br>
     <div id="dateSelector" style="display:none;">
-        <p>Dátum választása: <input type="text" id="datepicker"></p>
-    </div>
-
-{% endblock %}
-
-{% block select_button %}
-    <div id="forwardButton" style="display: none;">
         <br>
-        <button id="toTableButton">Klikk!</button>
+        <p>Dátum választása: <input type="text" id="datepicker"></p>
+            <div id="forwardButton" style="display: none;">
+        <br>
+        <button id="toTableButton">Tovább a foglaláshoz!</button>
+        </div>
     </div>
 
 {% endblock %}
@@ -33,6 +31,7 @@
     <div id="reservationTable"></div>
 
 {% endblock %}
+
 {% block formBlock %}
 
     <div id="reservationForm"></div>
