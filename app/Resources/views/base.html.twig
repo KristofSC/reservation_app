@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Rezervátor!{% endblock %}</title>
+        <title>{% block title %}-soroló-{% endblock %}</title>
         {% block stylesheets %}
             <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -26,8 +26,8 @@
     </head>
     <body>
 
-    <h1 >-rezervátor-</h1>
-    <h3 >orvosi időpontfoglaló alkalmazás</h3>
+    <h1 >-soroló-</h1>
+    <h3 >az orvosi időpontfoglaló alkalmazás</h3>
 
     <div class="container-fluid jumbotron">
         {% block body %}{% block surgerySelectBlock %}{% endblock %}{% endblock %}
@@ -35,7 +35,7 @@
         {% block select_button %}{% endblock %}
         {% block tableBlock %}{% endblock %}
         {% block formBlock %}{% endblock %}
-        {% block reservationSuccess %}{% endblock %}
+        {% block reservation_success %}{% endblock %}
     </div>
     </body>
 </html>

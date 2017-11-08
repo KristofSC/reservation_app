@@ -1,4 +1,16 @@
 h1, h3 {
-    color: red;
+    color: #880000;
     text-align: center;
+}
+
+body{
+    background-color: lightgrey;
+}
+
+#dateSelector{
+    text-align: center;
+}
+
+#selector{
+    margin-top: 3%;
 }
