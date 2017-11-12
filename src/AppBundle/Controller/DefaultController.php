@@ -51,14 +51,24 @@ class DefaultController extends Controller
     public function patientFormAction(Request $request): Response
     {
         $patientForm = $this->createForm(PatientDataType::class);
+        $validator = $this->get('validator');
 
-            $selectedSurgery = $request->get('surgery');
-            $selectedDate = $request->get('date');
-            $selectedHour = $request->get('hour');
+        $selectedSurgery = $request->get('surgery');
+        $selectedDate = $request->get('date');
+        $selectedHour = $request->get('hour');
 
-            $patientForm->get('surgeryName')->setData($selectedSurgery);
-            $patientForm->get('reservationDate')->setData($selectedDate);
-            $patientForm->get('reservationHour')->setData($selectedHour);
+        $patientForm->get('surgeryName')->setData($selectedSurgery);
+        $patientForm->get('reservationDate')->setData($selectedDate);
+        $patientForm->get('reservationHour')->setData($selectedHour);
+
+        $patientForm->handleRequest($request);
+
+        if($patientForm->isSubmitted() && $patientForm->isValid()){
+
+            return $this->render('AppBundle::reservationSuccess.html.twig',[
+                'patientData' => $patientForm->getData()
+            ]);
+        }
 
         return $this->render('AppBundle::patientForm.html.twig',[
             'patientForm' => $patientForm->createView()

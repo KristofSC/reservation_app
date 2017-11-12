@@ -18,7 +18,7 @@ AppBundle\Entity\Patient:
             length: 255
             nullable: true
         ssNumber:
-            type: integer
+            type: string
             nullable: true
             unique: true
             column: ss_number

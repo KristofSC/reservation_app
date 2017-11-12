@@ -3,6 +3,7 @@
 parameters:
     #parameter_name: value
 
+# kikapcsolni az autowiret - saját servicek legyenek - paramtérekkel ahogy a projekteken:
 services:
     # default configuration for services in *this* file
     _defaults:
