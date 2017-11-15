@@ -9,5 +9,5 @@ use Symfony\Component\Validator\Constraint;
  */
 class SSNumber extends Constraint
 {
-    public $message = "Nem megfelelő formátum!";
+    public $message = "";
 }
