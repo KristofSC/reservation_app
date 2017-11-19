@@ -23,24 +23,27 @@ class DefaultController extends Controller
 
     public function tableContentAction(Request $request): Response
     {
+        // breadcrumbhoz:
+        //$valami = $this->get('router')->generate(str_replace('/', '', $request->getPathInfo()));
 
         $reservationRepository = $this->getDoctrine()->getRepository('AppBundle:Reservation');
+
+       $reservationRepository->findOneBy(['code' => '2RsTWkh4qZ']);
+
 
         $selectedSurgery = $request->get('surgery');
         $selectedDate = $request->get('date');
 
         $dateTimeObject = new \DateTime($selectedDate);
 
-
         $reservedDays = $reservationRepository->findReservedDays($dateTimeObject, $selectedSurgery);
 
-        $reservedHours = [];
-        if($reservedDays = $reservedDays->getResult()) {
-            foreach ($reservedDays as $reservedDay)
+            $reservedHours = [];
+            foreach ($reservedDays->getResult() as $reservedDay)
             {
                 $reservedHours[$reservedDay->getHour()] = $reservedDay;
             }
-        }
+
 
         return $this->render('AppBundle::timeTable.html.twig',[
                 'reserved' => $reservedHours
@@ -51,7 +54,6 @@ class DefaultController extends Controller
     public function patientFormAction(Request $request): Response
     {
         $patientForm = $this->createForm(PatientDataType::class);
-        $validator = $this->get('validator');
 
         $selectedSurgery = $request->get('surgery');
         $selectedDate = $request->get('date');
@@ -65,8 +67,39 @@ class DefaultController extends Controller
 
         if($patientForm->isSubmitted() && $patientForm->isValid()){
 
+            $reservationDatas = $request->request->all();
+
+            $em = $this->getDoctrine()->getManager();
+
+            $firstName = $reservationDatas['patient_data']['firstName'];
+            $lastName = $reservationDatas['patient_data']['lastName'];
+            $SSNumber = $reservationDatas['patient_data']['SSNumber'];
+            $phoneNumber = $reservationDatas['patient_data']['phoneNumber'];
+            $email = $reservationDatas['patient_data']['email'];
+
+            $patientFactory = $this->get('app.patient.factory');
+
+            $patientObject = $patientFactory->create($firstName, $lastName, $SSNumber, $phoneNumber, $email);
+
+            $em->persist($patientObject);
+            $em->flush();
+
+            $selectedSurgery = $reservationDatas['patient_data']['surgeryName'];
+            $selectedDate = $reservationDatas['patient_data']['reservationDate'];
+            $selectedHour = $reservationDatas['patient_data']['reservationHour'];
+
+            $randomcode = $this->getRandomCode();
+
+            $dateTimeObject = new \DateTime($selectedDate);
+
+            $reservationObject = $this->getReservationFactory()->create($dateTimeObject, $selectedHour, $selectedSurgery, $patientObject, $randomcode);
+
+            $em->persist($reservationObject);
+            $em->flush();
+
             return $this->render('AppBundle::reservationSuccess.html.twig',[
-                'patientData' => $patientForm->getData()
+                'patientData' => $patientForm->getData(),
+                'code' => $reservationObject->getCode()
             ]);
         }
 
@@ -75,55 +108,28 @@ class DefaultController extends Controller
         ]);
     }
 
-    public function reservationSuccessAction(Request $request): Response
-    {
-        $reservationDatas = $request->request->all();
-
-        $em = $this->getDoctrine()->getManager();
-
-        $firstName = $reservationDatas['patient_data']['firstName'];
-        $lastName = $reservationDatas['patient_data']['lastName'];
-        $SSNumber = $reservationDatas['patient_data']['SSNumber'];
-        $phoneNumber = $reservationDatas['patient_data']['phoneNumber'];
-        $email = $reservationDatas['patient_data']['email'];
-
-        $patientObject = new Patient();
-
-        $patientObject->setFirstname($firstName);
-        $patientObject->setLastname($lastName);
-        $patientObject->setSsNumber($SSNumber);
-        //$patientObject->setPhoneNumber();
-        //$patientObject->setEmail();
-
-        $em->persist($patientObject);
-        $em->flush();
-
-        $selectedSurgery = $reservationDatas['patient_data']['surgeryName'];
-        $selectedDate = $reservationDatas['patient_data']['reservationDate'];
-        $selectedHour = $reservationDatas['patient_data']['reservationHour'];
-
-        $dateTimeObject = new \DateTime($selectedDate);
-
-        $reservationObject = new Reservation();
-
-        $em = $this->getDoctrine()->getManager();
-
-        $reservationObject->setDay($dateTimeObject);
-        $reservationObject->setHour($selectedHour);
-        $reservationObject->setSurgery($selectedSurgery);
-        $reservationObject->setPatient($patientObject);
-
-        $em->persist($reservationObject);
-        $em->flush();
-
-        return $this->render('AppBundle::reservationSuccess.html.twig',[
-            'datas' => $reservationDatas
-        ]);
-    }
 
     public function  getSurgeries(): array
     {
         return $this->container->getParameter('app.surgeries');
+    }
+
+    public function getPatientFactory()
+    {
+        return $this->get('app.patient.factory');
+    }
+
+    public function getReservationFactory()
+    {
+        return $this->get('app.reservation.factory');
+    }
+
+    protected function getRandomCode()
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $shuffled = str_shuffle($characters);
+
+        return substr($shuffled, 0, 10);
     }
 
 }

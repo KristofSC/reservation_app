@@ -2,9 +2,11 @@
 
 {% block reservation_success %}
 
-    <div>Kedves <strong>{{ patientData.firstName }} {{ patientData.lastName }} </strong> !
+    <div>Kedves <strong>{{ patientData.lastName }} {{ patientData.firstName }} </strong> !
         <br>
         Foglalását rendszerünk sikeresen rögzítette!
+        <br>
+        Foglalás egyedi azonosítója: <strong>{{ code }}</strong>
         <br>
         Várjuk szeretettel rendelőnkben!
     </div>

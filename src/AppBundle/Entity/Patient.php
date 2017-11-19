@@ -25,7 +25,17 @@ class Patient
     /**
      * @var int
      */
-    private $ssNumber;
+    private $ss_number;
+
+    /**
+     * @var string
+     */
+    private $phone_number;
+
+    /**
+     * @var string
+     */
+    private $email;
 
     /**
      * @var Reservation
@@ -97,9 +107,9 @@ class Patient
      *
      * @return Patient
      */
-    public function setSsNumber($ssNumber)
+    public function setSsNumber($ss_number)
     {
-        $this->ssNumber = $ssNumber;
+        $this->ss_number = $ss_number;
 
         return $this;
     }
@@ -111,7 +121,39 @@ class Patient
      */
     public function getSsNumber()
     {
-        return $this->ssNumber;
+        return $this->ss_number;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhoneNumber(): string
+    {
+        return $this->phone_number;
+    }
+
+    /**
+     * @param string $phone_number
+     */
+    public function setPhoneNumber(string $phone_number)
+    {
+        $this->phone_number = $phone_number;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
     }
 
     /**
@@ -129,7 +171,6 @@ class Patient
     {
         $this->reservations = $reservations;
     }
-
 
 }
 

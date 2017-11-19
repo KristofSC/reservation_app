@@ -1,1 +1,11 @@
-parameter:
+parameters:
+
+    app.patient.factory.class: 'AppBundle\Factory\PatientFactory'
+    app.reservation.factory.class: 'AppBundle\Factory\ReservationFactory'
+
+services:
+
+    app.patient.factory:
+        class: '%app.patient.factory.class%'
+    app.reservation.factory:
+        class: '%app.reservation.factory.class%'

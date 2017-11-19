@@ -1,15 +1,24 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: turai.kristof
- * Date: 2017.11.19.
- * Time: 15:34
- */
 
 namespace AppBundle\Factory;
 
 
+use AppBundle\Entity\Patient;
+use AppBundle\Entity\Reservation;
+
 class ReservationFactory
 {
+    public function create(\DateTime $dateTimeObject, int $selectedHour, string $selectedSurgery, Patient $patientObject, string $randomCode)
+    {
+        $reservationObject = new Reservation();
+
+        $reservationObject->setDay($dateTimeObject);
+        $reservationObject->setHour($selectedHour);
+        $reservationObject->setSurgery($selectedSurgery);
+        $reservationObject->setPatient($patientObject);
+        $reservationObject->setCode($randomCode);
+
+        return $reservationObject;
+    }
 
 }

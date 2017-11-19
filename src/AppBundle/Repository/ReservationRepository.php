@@ -10,7 +10,6 @@ namespace AppBundle\Repository;
  */
 class ReservationRepository extends \Doctrine\ORM\EntityRepository
 {
-
     public function findReservedDays(\DateTime $dateTime, string $surgery)
     {
         $dateFormatter = $dateTime->format('"Y-m-d H:i:s"');
@@ -20,6 +19,5 @@ class ReservationRepository extends \Doctrine\ORM\EntityRepository
             ->where("reservation_table.reservation_day = '{$replacedDate}'")
             ->andWhere("reservation_table.surgery = '{$surgery}'")
             ->getQuery();
-        ;
     }
 }

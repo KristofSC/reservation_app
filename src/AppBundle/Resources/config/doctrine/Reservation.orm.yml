@@ -1,6 +1,6 @@
 AppBundle\Entity\Reservation:
     type: entity
-    table: null
+    table: reservation
     repositoryClass: AppBundle\Repository\ReservationRepository
     id:
         id:
@@ -14,6 +14,8 @@ AppBundle\Entity\Reservation:
         hour:
             type: integer
         surgery:
+            type: string
+        code:
             type: string
     manyToOne:
       patient:

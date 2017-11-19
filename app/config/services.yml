@@ -3,12 +3,11 @@
 parameters:
     #parameter_name: value
 
-# kikapcsolni az autowiret - saját servicek legyenek - paramtérekkel ahogy a projekteken:
 services:
     # default configuration for services in *this* file
     _defaults:
         # automatically injects dependencies in your services
-        autowire: true
+        autowire: false
         # automatically registers your services as commands, event subscribers, etc.
         autoconfigure: true
         # this means you cannot fetch services directly from the container via $container->get()

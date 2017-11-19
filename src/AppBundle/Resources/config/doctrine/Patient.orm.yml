@@ -1,6 +1,6 @@
 AppBundle\Entity\Patient:
     type: entity
-    table: null
+    table: patient
     repositoryClass: AppBundle\Repository\PatientRepository
     id:
         id:
@@ -17,11 +17,19 @@ AppBundle\Entity\Patient:
             type: string
             length: 255
             nullable: true
-        ssNumber:
+        ss_number:
             type: string
             nullable: true
             unique: true
             column: ss_number
+        phone_number:
+            type: string
+            length: 255
+            nullable: true
+        email:
+            type: string
+            length: 255
+            nullable: true
     oneToMany:
       reservations:
         targetEntity: Reservation

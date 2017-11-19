@@ -28,18 +28,19 @@ class Reservation
     private $surgery;
 
     /**
+     * @var string
+     */
+    private $code;
+
+    /**
      * @var Patient
      */
     private $patient;
 
+
     public function getId(): int
     {
         return $this->id;
-    }
-
-    public function setDay(\DateTime $reservation_day): void
-    {
-        $this->reservation_day = $reservation_day;
     }
 
     public function getDay(): \DateTime
@@ -47,24 +48,19 @@ class Reservation
         return $this->reservation_day;
     }
 
+    public function setDay(\DateTime $reservation_day): void
+    {
+        $this->reservation_day = $reservation_day;
+    }
+
     public function getHour(): int
     {
         return $this->hour;
     }
 
-    public function setHour($hour): void
+    public function setHour(int $hour): void
     {
         $this->hour = $hour;
-    }
-
-    public function getPatient(): Patient
-    {
-        return $this->patient;
-    }
-
-    public function setPatient($patient): void
-    {
-        $this->patient = $patient;
     }
 
     public function getSurgery(): string
@@ -76,5 +72,27 @@ class Reservation
     {
         $this->surgery = $surgery;
     }
+
+    public function getCode(): string
+    {
+        return $this->code;
+    }
+
+    public function setCode(string $code): void
+    {
+        $this->code = $code;
+    }
+
+    public function getPatient(): Patient
+    {
+        return $this->patient;
+    }
+
+    public function setPatient(Patient $patient): void
+    {
+        $this->patient = $patient;
+    }
+
+
 
 }

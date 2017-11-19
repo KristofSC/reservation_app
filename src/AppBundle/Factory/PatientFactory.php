@@ -1,12 +1,22 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: turai.kristof
- * Date: 2017.11.18.
- * Time: 20:28
- */
+namespace AppBundle\Factory;
+
+use AppBundle\Entity\Patient;
+
 class PatientFactory
 {
+    public function create(string $firstname, string $lastname, string $SSNumber, string $phoneNumber, string $email)
+    {
+        $patientObject = new Patient();
+
+        $patientObject->setFirstname($firstname);
+        $patientObject->setLastname($lastname);
+        $patientObject->setSsNumber($SSNumber);
+        $patientObject->setPhoneNumber($phoneNumber);
+        $patientObject->setEmail($email);
+
+        return $patientObject;
+    }
 
 }
