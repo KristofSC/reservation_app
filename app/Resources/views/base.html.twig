@@ -26,16 +26,21 @@
     </head>
     <body>
 
-    <h1 >-soroló-</h1>
-    <h3 >az orvosi időpontfoglaló alkalmazás</h3>
-
-    <div class="container-fluid jumbotron">
-        {% block body %}{% block surgerySelectBlock %}{% endblock %}{% endblock %}
-        {% block datepicker %}{% endblock %}
-        {% block select_button %}{% endblock %}
-        {% block tableBlock %}{% endblock %}
-        {% block formBlock %}{% endblock %}
-        {% block reservation_success %}{% endblock %}
-    </div>
+<div class="container">
+        <div class="jumbotron">
+            <p>-soroló-</p>
+            <p>az orvosi időpontfoglaló alkalmazás</p>
+        </div>
+        {% block search_box%}{% endblock %}
+        {% block result_content %}{% endblock %}
+         <div>
+             {% block body %}{% block surgerySelectBlock %}{% endblock %}{% endblock %}
+             {% block datepicker %}{% endblock %}
+             {% block select_button %}{% endblock %}
+             {% block tableBlock %}{% endblock %}
+             {% block formBlock %}{% endblock %}
+             {% block reservation_success %}{% endblock %}
+        </div>
+</div>
     </body>
 </html>

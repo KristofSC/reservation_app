@@ -1,4 +1,4 @@
-h1, h3 {
+p {
     color: #880000;
     text-align: center;
 }
@@ -13,4 +13,8 @@ body{
 
 #selector{
     margin-top: 3%;
+}
+
+a, button{
+    margin: 2%;
 }

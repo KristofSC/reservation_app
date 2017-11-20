@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block result_content %}
+
+    {% if reservation != null %}
+
+        {{ "Kedves %s %s!"|format( reservation.patient.lastname , reservation.patient.firstname) }}
+        <br>
+        {{ "Foglalt rendelő neve és a foglalás ideje: %s - %s : %d!"|format( reservation.surgery, reservation.day|date('Y-m-d'), reservation.hour ) }}
+
+    {% else %}
+
+        <p>Sajnáljuk a keresés nem járt eredménnyel!</p>
+
+    {% endif %}
+
+    <a class="btn btn-info center-block" href="{{ '/' }}">Vissza a főoldalra</a>
+
+{% endblock %}

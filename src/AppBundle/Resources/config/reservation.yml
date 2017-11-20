@@ -3,13 +3,17 @@ homepage:
     defaults: { _controller: "AppBundle:Default:index" }
 
 reservation_table:
-    path: /reservation_table
+    path: /reservation-table
     defaults: { _controller: "AppBundle:Default:tableContent" }
 
 patient_form:
-    path: /patient_form
+    path: /patient-form
     defaults: { _controller: "AppBundle:Default:patientForm" }
 
 reservation_success:
-    path: /reservation_success
+    path: /reservation-success
     defaults: { _controller: "AppBundle:Default:reservationSuccess"}
+
+code_result:
+    path: /code-result
+    defaults: { _controller: "AppBundle:Default:codeSearchResult"}

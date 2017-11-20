@@ -4,6 +4,9 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Patient;
 use AppBundle\Entity\Reservation;
+use AppBundle\Factory\PatientFactory;
+use AppBundle\Factory\ReservationFactory;
+use AppBundle\Repository\ReservationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\PatientDataType;
@@ -21,15 +24,17 @@ class DefaultController extends Controller
         ]);
     }
 
+    protected function  getSurgeries(): array
+    {
+        return $this->container->getParameter('app.surgeries');
+    }
+
     public function tableContentAction(Request $request): Response
     {
         // breadcrumbhoz:
         //$valami = $this->get('router')->generate(str_replace('/', '', $request->getPathInfo()));
 
-        $reservationRepository = $this->getDoctrine()->getRepository('AppBundle:Reservation');
-
-       $reservationRepository->findOneBy(['code' => '2RsTWkh4qZ']);
-
+        $reservationRepository = $this->getReservationRepository();
 
         $selectedSurgery = $request->get('surgery');
         $selectedDate = $request->get('date');
@@ -50,6 +55,11 @@ class DefaultController extends Controller
         ]);
 
 }
+
+    protected function getReservationRepository(): ReservationRepository
+    {
+        return $this->getDoctrine()->getRepository('AppBundle:Reservation');
+    }
 
     public function patientFormAction(Request $request): Response
     {
@@ -108,28 +118,35 @@ class DefaultController extends Controller
         ]);
     }
 
-
-    public function  getSurgeries(): array
-    {
-        return $this->container->getParameter('app.surgeries');
-    }
-
-    public function getPatientFactory()
-    {
-        return $this->get('app.patient.factory');
-    }
-
-    public function getReservationFactory()
-    {
-        return $this->get('app.reservation.factory');
-    }
-
     protected function getRandomCode()
     {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $shuffled = str_shuffle($characters);
 
         return substr($shuffled, 0, 10);
+    }
+
+    protected function getReservationFactory(): ReservationFactory
+    {
+        return $this->get('app.reservation.factory');
+    }
+
+    public function codeSearchResultAction(Request $request)
+    {
+        $reservationRepository = $this->getReservationRepository();
+
+        $searchInput = trim($request->get('searchInput'));
+
+        $reservationObject = $reservationRepository->findOneBy(['code' => $searchInput]);
+
+        return $this->render('AppBundle::codeSearchResult.html.twig',[
+            'reservation' => $reservationObject
+        ]);
+    }
+
+    protected function getPatientFactory(): PatientFactory
+    {
+        return $this->get('app.patient.factory');
     }
 
 }

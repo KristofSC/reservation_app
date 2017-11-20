@@ -14,7 +14,7 @@
                     {% if reserved[i] is defined %}
                         <td>Foglalt</td>
                     {% else %}
-                        <td><input type="button" id="reservationButton" value="Lefoglalom" data-hour="{{ i }}"></td>
+                        <td><input type="button" class="btn btn-info" id="reservationButton" value="Lefoglalom" data-hour="{{ i }}"></td>
                     {% endif %}
                 </tr>
             {% endfor %}

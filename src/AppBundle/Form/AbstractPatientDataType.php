@@ -59,7 +59,7 @@ abstract class AbstractPatientDataType extends AbstractType
                     'label' => 'E-mail cím: '
                 ])
             ->setMethod('POST')
-            ->setAction('patient_form')
+            ->setAction('patient-form')
             ->add('submitButton', SubmitType::class,
                 [
                     'label' => 'Lefoglalom!',
