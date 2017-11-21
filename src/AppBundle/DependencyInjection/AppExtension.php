@@ -23,6 +23,7 @@ class AppExtension extends Extension
         // paraméter beállítása a configurationből:
         if (!empty($config['surgeries'])) {
             $container->setParameter('app.surgeries', $config['surgeries']);
+            $container->setParameter('app.breadcrumb', $config['breadcrumb']);
         }
     }
 

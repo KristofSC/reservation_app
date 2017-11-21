@@ -3,9 +3,16 @@ parameters:
     app.patient.factory.class: 'AppBundle\Factory\PatientFactory'
     app.reservation.factory.class: 'AppBundle\Factory\ReservationFactory'
 
+    app.breadcrumb.builder.class: 'AppBundle\Breadcrumb\BreadcrumbBuilder'
+
 services:
 
     app.patient.factory:
         class: '%app.patient.factory.class%'
     app.reservation.factory:
         class: '%app.reservation.factory.class%'
+
+    app.breadcrumb.builder:
+        class: '%app.breadcrumb.builder.class%'
+        arguments:
+            - '@router'

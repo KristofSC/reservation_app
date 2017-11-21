@@ -16,23 +16,20 @@ class DefaultController extends Controller
 {
     public function indexAction(Request $request): Response
     {
+        $breadcrumbs = $this->getBreadcrumbBuilder()->addItemList($this->getBreadcrumbs(), $request->get('_route'));
+
         $surgeries = $this->getSurgeries();
 
         return $this->render('AppBundle::index.html.twig', [
             'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
-            'surgeries' => $surgeries
+            'surgeries' => $surgeries,
+            'breadcrumbs' => $breadcrumbs
         ]);
-    }
-
-    protected function  getSurgeries(): array
-    {
-        return $this->container->getParameter('app.surgeries');
     }
 
     public function tableContentAction(Request $request): Response
     {
-        // breadcrumbhoz:
-        //$valami = $this->get('router')->generate(str_replace('/', '', $request->getPathInfo()));
+        $breadcrumbs = $this->getBreadcrumbBuilder()->addItemList($this->getBreadcrumbs(), $request->get('_route'));
 
         $reservationRepository = $this->getReservationRepository();
 
@@ -51,18 +48,16 @@ class DefaultController extends Controller
 
 
         return $this->render('AppBundle::timeTable.html.twig',[
-                'reserved' => $reservedHours
+                'reserved' => $reservedHours,
+                'breadcrumbs' => $breadcrumbs
         ]);
 
 }
 
-    protected function getReservationRepository(): ReservationRepository
-    {
-        return $this->getDoctrine()->getRepository('AppBundle:Reservation');
-    }
-
     public function patientFormAction(Request $request): Response
     {
+        $breadcrumbs = $this->getBreadcrumbBuilder()->addItemList($this->getBreadcrumbs(), $request->get('_route'));
+
         $patientForm = $this->createForm(PatientDataType::class);
 
         $selectedSurgery = $request->get('surgery');
@@ -109,26 +104,15 @@ class DefaultController extends Controller
 
             return $this->render('AppBundle::reservationSuccess.html.twig',[
                 'patientData' => $patientForm->getData(),
+                'breadcrumbs' => $breadcrumbs,
                 'code' => $reservationObject->getCode()
             ]);
         }
 
         return $this->render('AppBundle::patientForm.html.twig',[
-            'patientForm' => $patientForm->createView()
+            'patientForm' => $patientForm->createView(),
+            'breadcrumbs' => $breadcrumbs
         ]);
-    }
-
-    protected function getRandomCode()
-    {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $shuffled = str_shuffle($characters);
-
-        return substr($shuffled, 0, 10);
-    }
-
-    protected function getReservationFactory(): ReservationFactory
-    {
-        return $this->get('app.reservation.factory');
     }
 
     public function codeSearchResultAction(Request $request)
@@ -147,6 +131,39 @@ class DefaultController extends Controller
     protected function getPatientFactory(): PatientFactory
     {
         return $this->get('app.patient.factory');
+    }
+
+    protected function getSurgeries(): array
+    {
+        return $this->container->getParameter('app.surgeries');
+    }
+
+    protected function getBreadcrumbs(): array
+    {
+        return $this->container->getParameter('app.breadcrumb');
+    }
+
+    protected function getBreadcrumbBuilder()
+    {
+        return $this->get('app.breadcrumb.builder');
+    }
+
+    protected function getRandomCode()
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $shuffled = str_shuffle($characters);
+
+        return substr($shuffled, 0, 10);
+    }
+
+    protected function getReservationFactory(): ReservationFactory
+    {
+        return $this->get('app.reservation.factory');
+    }
+
+    protected function getReservationRepository(): ReservationRepository
+    {
+        return $this->getDoctrine()->getRepository('AppBundle:Reservation');
     }
 
 }

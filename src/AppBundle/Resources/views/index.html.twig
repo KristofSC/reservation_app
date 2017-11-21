@@ -1,5 +1,15 @@
 {% extends 'base.html.twig' %}
 
+    {% block breadcrumb %}
+
+        {% for arrays in breadcrumbs %}
+            {% for url, title in arrays %}
+                <a href="{{ url }}" class="btn btn-info" role="button">{{ title }}</a>
+            {% endfor %}
+        {% endfor %}
+
+    {% endblock %}
+
 {% block search_box %}
             <form action="{{ 'code-result' }}" method="POST">
              <div class="form-group row">

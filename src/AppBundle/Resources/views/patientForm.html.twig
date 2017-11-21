@@ -1,5 +1,16 @@
 {% form_theme patientForm 'bootstrap_3_layout.html.twig' %}
 
+
+    {% block breadcrumb %}
+
+        {% for arrays in breadcrumbs %}
+            {% for url, title in arrays %}
+                <a href="{{ url }}" class="btn btn-info" role="button">{{ title }}</a>
+            {% endfor %}
+        {% endfor %}
+
+    {% endblock %}
+
 {% block reservation_form %}
 
     {{ form_start(patientForm) }}
