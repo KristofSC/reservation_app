@@ -2,8 +2,7 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Patient;
-use AppBundle\Entity\Reservation;
+use AppBundle\Breadcrumb\BreadcrumbBuilder;
 use AppBundle\Factory\PatientFactory;
 use AppBundle\Factory\ReservationFactory;
 use AppBundle\Repository\ReservationRepository;
@@ -20,11 +19,35 @@ class DefaultController extends Controller
 
         $surgeries = $this->getSurgeries();
 
+        $dateLimit = $this->getDateLimit();
+
+
         return $this->render('AppBundle::index.html.twig', [
             'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
             'surgeries' => $surgeries,
-            'breadcrumbs' => $breadcrumbs
+            'breadcrumbs' => $breadcrumbs,
+            'dayLimit' => $dateLimit
         ]);
+    }
+
+    protected function getBreadcrumbBuilder(): BreadcrumbBuilder
+    {
+        return $this->get('app.breadcrumb.builder');
+    }
+
+    protected function getBreadcrumbs(): array
+    {
+        return $this->container->getParameter('app.breadcrumb');
+    }
+
+    protected function getSurgeries(): array
+    {
+        return $this->container->getParameter('app.surgeries');
+    }
+
+    protected function getDateLimit(): int
+    {
+        return $this->container->getParameter('app.dateLimit');
     }
 
     public function tableContentAction(Request $request): Response
@@ -53,6 +76,11 @@ class DefaultController extends Controller
         ]);
 
 }
+
+    protected function getReservationRepository(): ReservationRepository
+    {
+        return $this->getDoctrine()->getRepository('AppBundle:Reservation');
+    }
 
     public function patientFormAction(Request $request): Response
     {
@@ -115,7 +143,20 @@ class DefaultController extends Controller
         ]);
     }
 
-    public function codeSearchResultAction(Request $request)
+    protected function getRandomCode(): string
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $shuffled = str_shuffle($characters);
+
+        return substr($shuffled, 0, 10);
+    }
+
+    protected function getReservationFactory(): ReservationFactory
+    {
+        return $this->get('app.reservation.factory');
+    }
+
+    public function codeSearchResultAction(Request $request): Response
     {
         $reservationRepository = $this->getReservationRepository();
 
@@ -131,39 +172,6 @@ class DefaultController extends Controller
     protected function getPatientFactory(): PatientFactory
     {
         return $this->get('app.patient.factory');
-    }
-
-    protected function getSurgeries(): array
-    {
-        return $this->container->getParameter('app.surgeries');
-    }
-
-    protected function getBreadcrumbs(): array
-    {
-        return $this->container->getParameter('app.breadcrumb');
-    }
-
-    protected function getBreadcrumbBuilder()
-    {
-        return $this->get('app.breadcrumb.builder');
-    }
-
-    protected function getRandomCode()
-    {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $shuffled = str_shuffle($characters);
-
-        return substr($shuffled, 0, 10);
-    }
-
-    protected function getReservationFactory(): ReservationFactory
-    {
-        return $this->get('app.reservation.factory');
-    }
-
-    protected function getReservationRepository(): ReservationRepository
-    {
-        return $this->getDoctrine()->getRepository('AppBundle:Reservation');
     }
 
 }

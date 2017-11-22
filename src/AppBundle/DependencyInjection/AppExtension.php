@@ -24,6 +24,7 @@ class AppExtension extends Extension
         if (!empty($config['surgeries'])) {
             $container->setParameter('app.surgeries', $config['surgeries']);
             $container->setParameter('app.breadcrumb', $config['breadcrumb']);
+            $container->setParameter('app.dateLimit', $config['dateLimit']);
         }
     }
 

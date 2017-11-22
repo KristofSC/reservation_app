@@ -36,9 +36,10 @@
 {% endblock %}
 
 {% block datepicker %}
+
     <div id="dateSelector" style="display:none;">
         <br>
-        <p id="selector">Dátum választása: <input type="text" id="datepicker"></p>
+        <p id="selector">Dátum választása: <input data-config-datepicker="{{ dayLimit }}"  type="text" id="datepicker"></p>
             <div id="forwardButton" style="display: none;">
         <br>
         <button class="btn btn-success" id="toTableButton">Tovább a foglaláshoz!</button>

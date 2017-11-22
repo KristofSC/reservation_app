@@ -4,7 +4,6 @@ namespace AppBundle\Breadcrumb;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Router;
-use Symfony\Component\Security\Csrf\TokenGenerator\UriSafeTokenGenerator;
 
 class BreadcrumbBuilder
 {

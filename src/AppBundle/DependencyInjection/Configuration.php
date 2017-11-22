@@ -15,7 +15,7 @@ class Configuration implements ConfigurationInterface
 
         $this->addSurgerySection($rootNode);
         $this->addBreadcrumbSection($rootNode);
-
+        $this->addDateLimit($rootNode);
 
         return $treeBuilder;
 
@@ -47,5 +47,15 @@ class Configuration implements ConfigurationInterface
                     ->end()
             ->end();
 
+    }
+
+    private function addDateLimit(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
+                    ->integerNode('dateLimit')
+                            ->defaultValue(50)
+                    ->end()
+            ->end();
     }
 }

@@ -1,7 +1,9 @@
-    $(function () {
+
+
+$(function () {
             $("#datepicker").datepicker({
                     minDate: '1D',
-                    maxDate: "1M",
+                    maxDate: $('#datepicker').data('config-datepicker'),
                     dateFormat: 'yy-mm-dd'
                 }
             );
