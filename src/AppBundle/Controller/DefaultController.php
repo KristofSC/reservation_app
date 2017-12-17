@@ -5,7 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Breadcrumb\BreadcrumbBuilder;
 use AppBundle\Factory\PatientFactory;
 use AppBundle\Factory\ReservationFactory;
-use AppBundle\Repository\ReservationRepository;
+use AppBundle\Manager\ReservationManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\PatientDataType;
@@ -54,7 +54,7 @@ class DefaultController extends Controller
     {
         $breadcrumbs = $this->getBreadcrumbBuilder()->addItemList($this->getBreadcrumbs(), $request->get('_route'));
 
-        $reservationRepository = $this->getReservationRepository();
+        $reservationRepository = $this->getReservationManager();
 
         $selectedSurgery = $request->get('surgery');
         $selectedDate = $request->get('date');
@@ -77,9 +77,9 @@ class DefaultController extends Controller
 
 }
 
-    protected function getReservationRepository(): ReservationRepository
+    protected function getReservationManager(): ReservationManager
     {
-        return $this->getDoctrine()->getRepository('AppBundle:Reservation');
+        return $this->get('app.reservation.manager');
     }
 
     public function patientFormAction(Request $request): Response
@@ -145,10 +145,13 @@ class DefaultController extends Controller
 
     protected function getRandomCode(): string
     {
+        $nowTime = new \DateTime();
+        $nowTimeStamp = $nowTime->getTimestamp();
+
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $shuffled = str_shuffle($characters);
 
-        return substr($shuffled, 0, 10);
+        return substr($shuffled, 0, 5) . $nowTimeStamp;
     }
 
     protected function getReservationFactory(): ReservationFactory
@@ -158,7 +161,7 @@ class DefaultController extends Controller
 
     public function codeSearchResultAction(Request $request): Response
     {
-        $reservationRepository = $this->getReservationRepository();
+        $reservationRepository = $this->getReservationManager();
 
         $searchInput = trim($request->get('searchInput'));
 

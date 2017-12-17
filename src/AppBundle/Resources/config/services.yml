@@ -1,4 +1,9 @@
 parameters:
+    app.reservation.repository.class: 'ApppBundle\Repository\ReservationRepository'
+    app.patient.repository.class: 'ApppBundle\Repository\PatientRepository'
+
+    app.patient.manager.class: 'AppBundle\Manager\PatientManager'
+    app.reservation.manager.class: 'AppBundle\Manager\ReservationManager'
 
     app.patient.factory.class: 'AppBundle\Factory\PatientFactory'
     app.reservation.factory.class: 'AppBundle\Factory\ReservationFactory'
@@ -7,8 +12,20 @@ parameters:
 
 services:
 
+    app.reservation.repository:
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    app.patient.manager:
+        class: '%app.patient.manager.class%'
+
+    app.reservation.manager.abstract:
+        parent:
+        class: '%app.reservation.manager.class%'
+
     app.patient.factory:
         class: '%app.patient.factory.class%'
+
     app.reservation.factory:
         class: '%app.reservation.factory.class%'
 

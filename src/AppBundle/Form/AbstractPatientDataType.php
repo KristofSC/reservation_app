@@ -3,6 +3,7 @@
 namespace AppBundle\Form;
 
 use AppBundle\Validator\Constraints;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -44,7 +45,7 @@ abstract class AbstractPatientDataType extends AbstractType
                     'constraints' =>
                         [
                             new Constraints\SSNumber([
-                                'message' => "A formátum a következő legyen: xxx-xxx-xxx!"
+                                'message' => "A szám formátuma a következő legyen: xxx-xxx-xxx!"
                             ])
                         ]
                 ])
@@ -56,7 +57,13 @@ abstract class AbstractPatientDataType extends AbstractType
             ->add('email', EmailType::class,
                 [
                     'required' => true,
-                    'label' => 'E-mail cím: '
+                    'label' => 'E-mail cím: ',
+                    'constraints' =>
+                        [
+                            new Assert\Email(([
+                                'message' => "E-mail cím nem megfelelő!"
+                            ]))
+                        ]
                 ])
             ->add('submitButton', SubmitType::class,
                 [

@@ -54,7 +54,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                     ->integerNode('dateLimit')
-                            ->defaultValue(50)
+                            ->defaultValue(60)
                     ->end()
             ->end();
     }
