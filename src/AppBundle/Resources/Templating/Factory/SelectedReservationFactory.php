@@ -1,5 +1,8 @@
 <?php
 
+namespace AppBundle\Resources\Templating\Factory;
+
+use AppBundle\Resources\Templating\ViewObject\SelectedReservationView;
 
 class SelectedReservationFactory
 {

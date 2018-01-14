@@ -8,7 +8,7 @@ use AppBundle\Factory\ReservationFactory;
 use AppBundle\Manager\ReservationManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Form\PatientDataType;
+use AppBundle\Form\ReservationType;
 use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
@@ -86,7 +86,7 @@ class DefaultController extends Controller
     {
         $breadcrumbs = $this->getBreadcrumbBuilder()->addItemList($this->getBreadcrumbs(), $request->get('_route'));
 
-        $patientForm = $this->createForm(PatientDataType::class);
+        $patientForm = $this->createForm(ReservationType::class);
 
         $selectedSurgery = $request->get('surgery');
         $selectedDate = $request->get('date');

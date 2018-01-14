@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 /**
  * ReservationDay
  */
-class Reservation
+class Reservation extends Entity
 {
     /**
      * @var int

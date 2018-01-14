@@ -5,7 +5,7 @@ namespace AppBundle\Form;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class PatientDataType extends AbstractPatientDataType
+class ReservationType extends AbstractReservationType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 /**
  * Patient
  */
-class Patient
+class Patient extends Entity
 {
     /**
      * @var int

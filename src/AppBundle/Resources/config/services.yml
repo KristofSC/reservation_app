@@ -10,18 +10,28 @@ parameters:
 
     app.breadcrumb.builder.class: 'AppBundle\Breadcrumb\BreadcrumbBuilder'
 
+
 services:
 
-    app.reservation.repository:
+    app.basemanager.abstract:
+        abstract: true
         arguments:
-            - '@doctrine.orm.entity_manager'
+          - "@doctrine.orm.entity_manager"
+          - ~
 
     app.patient.manager:
-        class: '%app.patient.manager.class%'
+        parent: "app.basemanager.abstract"
+        class: "%app.patient.manager.class%"
+        arguments:
+          index_1: 'AppBundle\Entity\Patient'
 
-    app.reservation.manager.abstract:
-        parent:
-        class: '%app.reservation.manager.class%'
+    app.reservation.manager:
+        parent: "app.basemanager.abstract"
+        class: "%app.reservation.manager.class%"
+        arguments:
+          index_1: 'AppBundle\Entity\Reservation'
+
+
 
     app.patient.factory:
         class: '%app.patient.factory.class%'
