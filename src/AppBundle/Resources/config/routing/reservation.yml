@@ -12,8 +12,16 @@ patient_form:
 
 reservation_success:
     path: /reservation-success
-    defaults: { _controller: "AppBundle:Default:reservationSuccess"}
+    defaults: { _controller: "AppBundle:Default:reservationSuccess" }
 
 code_result:
     path: /code-result
-    defaults: { _controller: "AppBundle:Default:codeSearchResult"}
+    defaults: { _controller: "AppBundle:Default:codeSearchResult" }
+
+login:
+    path: /login
+    defaults: { _controller: "AppBundle:Default:login" }
+
+registration:
+    path: /registration
+    defaults: { _controller: "AppBundle:Default:registration" }

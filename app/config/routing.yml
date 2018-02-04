@@ -1,2 +1,2 @@
 app:
-    resource: '@AppBundle/Resources/config/reservation.yml'
+    resource: '@AppBundle/Resources/config/routing/reservation.yml'

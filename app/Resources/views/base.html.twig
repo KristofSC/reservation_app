@@ -31,17 +31,29 @@
             <p>-soroló-</p>
             <p>az orvosi időpontfoglaló alkalmazás</p>
         </div>
-        {% block search_box%}{% endblock %}
-        {% block breadcrumb %}{% endblock %}
-        {% block result_content %}{% endblock %}
-         <div>
-             {% block body %}{% block surgerySelectBlock %}{% endblock %}{% endblock %}
-             {% block datepicker %}{% endblock %}
-             {% block select_button %}{% endblock %}
-             {% block tableBlock %}{% endblock %}
-             {% block formBlock %}{% endblock %}
-             {% block reservation_success %}{% endblock %}
+
+    <div class="row">
+        <div class="col-md-6">
+            {% block search_box%}{% endblock %}
+            {% block breadcrumb %}{% endblock %}
+            {% block result_content %}{% endblock %}
         </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+            {% block loginForm %}{% endblock %}
+            {% block registrationForm %}{% endblock %}
+            {% block body %}{% block surgerySelectBlock %}{% endblock %}{% endblock %}
+            {% block datepicker %}{% endblock %}
+            {% block select_button %}{% endblock %}
+            {% block tableBlock %}{% endblock %}
+            {% block formBlock %}{% endblock %}
+            {% block reservation_success %}{% endblock %}
+        </div>
+    </div>
+
 </div>
     </body>
 </html>

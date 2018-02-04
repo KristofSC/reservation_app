@@ -5,6 +5,8 @@ namespace AppBundle\Controller;
 use AppBundle\Breadcrumb\BreadcrumbBuilder;
 use AppBundle\Factory\PatientFactory;
 use AppBundle\Factory\ReservationFactory;
+use AppBundle\Form\LoginType;
+use AppBundle\Form\RegistrationType;
 use AppBundle\Manager\ReservationManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,6 +15,26 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
+    public function loginAction(): Response
+    {
+        $loginForm = $this->createForm(LoginType::class);
+
+
+        return $this->render('AppBundle::loginForm.html.twig',[
+            'loginForm' => $loginForm->createView(),
+        ]);
+
+    }
+
+    public function registrationAction(): Response
+    {
+        $registrationForm = $this->createForm(RegistrationType::class);
+
+        return $this->render('AppBundle::registrationForm.html.twig', [
+            'registrationForm' => $registrationForm->createView(),
+        ]);
+    }
+
     public function indexAction(Request $request): Response
     {
         $breadcrumbs = $this->getBreadcrumbBuilder()->addItemList($this->getBreadcrumbs(), $request->get('_route'));
@@ -91,6 +113,7 @@ class DefaultController extends Controller
         $selectedSurgery = $request->get('surgery');
         $selectedDate = $request->get('date');
         $selectedHour = $request->get('hour');
+
 
         $patientForm->get('surgeryName')->setData($selectedSurgery);
         $patientForm->get('reservationDate')->setData($selectedDate);

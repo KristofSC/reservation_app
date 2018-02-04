@@ -43,3 +43,8 @@ services:
         class: '%app.breadcrumb.builder.class%'
         arguments:
             - '@router'
+
+    app.security.voter.delete_any_reservation:
+        class: AppBundle\Security\Voter\DeleteAnyReservationVoter
+        tags:
+            - { name: security.voter }

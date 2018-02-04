@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+{% form_theme loginForm 'bootstrap_3_layout.html.twig' %}
+
+
+{% block loginForm %}
+
+    {{ form_start(loginForm) }}
+
+    {{ form_label(loginForm.email) }}
+    {{ form_widget(loginForm.email) }}
+
+    {{ form_label(loginForm.password) }}
+    {{ form_widget(loginForm.password) }}
+
+    <span id="registration">
+        {{ form_label(loginForm.login) }}
+        {{ form_widget(loginForm.login) }}
+        {% if is_granted('delete_any_reservation') %}
+            <a href="/registration">Nincs azonosítom, regisztrálok!</a>
+        {% endif %}
+    </span>
+
+    {{ form_end(loginForm) }}
+
+{% endblock %}
