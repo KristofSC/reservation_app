@@ -18,3 +18,7 @@ body{
 a, button{
     margin: 2%;
 }
+
+#logout-box{
+    text-align: right;
+}

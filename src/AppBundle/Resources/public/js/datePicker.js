@@ -1,10 +1,9 @@
 
-
 $(function () {
-            $("#datepicker").datepicker({
-                    minDate: '1D',
-                    maxDate: $('#datepicker').data('config-datepicker'),
-                    dateFormat: 'yy-mm-dd'
+            $(".datepicker").datepicker({
+                    startDate: '0d',
+                    endDate: '2018-03-13',
+                    format: 'yyyy-mm-dd'
                 }
             );
         }

@@ -4,6 +4,7 @@
 
         {% for arrays in breadcrumbs %}
             {% for url, title in arrays %}
+                {{ sess }}
                 <a href="{{ url }}" class="btn btn-info" role="button">{{ title }}</a>
             {% endfor %}
         {% endfor %}

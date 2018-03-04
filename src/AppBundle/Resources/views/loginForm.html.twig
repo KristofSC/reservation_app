@@ -20,6 +20,10 @@
         {% endif %}
     </span>
 
-    {{ form_end(loginForm) }}
+    {% if error %}
+        <div>Felhasználó nem található!</div>
+    {% endif %}
+
+    <a class="btn btn-info" href="{{ path('registration') }}">Nincs még fiókom, regisztrálok!</a>
 
 {% endblock %}

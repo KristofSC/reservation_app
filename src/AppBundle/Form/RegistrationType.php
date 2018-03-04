@@ -3,10 +3,13 @@
 namespace AppBundle\Form;
 
 
+use AppBundle\Entity\Patient;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RegistrationType extends AbstractPatientDataType
 {
@@ -25,19 +28,34 @@ class RegistrationType extends AbstractPatientDataType
             ->add('address', TextType::class,
                 [
                     'label' => 'Lakcím',
+                    'required' => false
                 ])
             ->add('phonenumber', TextType::class,
                 [
-                    'label' => 'Telefonszám:'
+                    'label' => 'Telefonszám:',
+                    'required' => false
                 ])
-            ->add('passwordconfirm', PasswordType::class,
+            ->add('password', RepeatedType::class,
                 [
-                    'label' => 'Jelszó újra:',
+                    'type' => PasswordType::class,
+                    'invalid_message' => 'A két jelszónak egyeznie kell!',
+                    'first_options' =>
+                        [ 'label' => 'Jelszó' ],
+                    'second_options' =>
+                        [ 'label' => 'Jelszó megerősítése']
                 ]
             )
             ->add('registrate', SubmitType::class,
                 [
                     'label' => 'Regisztrálok'
                 ]);
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults( [
+            'data_class' => Patient::class,
+                ]
+        );
     }
 }

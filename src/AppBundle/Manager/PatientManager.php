@@ -2,9 +2,13 @@
 
 namespace AppBundle\Manager;
 
-use AppBundle\Repository\PatientRepository;
+use AppBundle\Entity\Patient;
 
-class PatientManager extends PatientRepository
+class PatientManager extends BaseManager
 {
+    public function doSaveEntity(Patient $entity)
+    {
+        $this->save($entity);
+    }
 
 }

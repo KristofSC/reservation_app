@@ -3,6 +3,7 @@
 
 namespace AppBundle\Form;
 
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -12,13 +13,18 @@ class LoginType extends AbstractPatientDataType
     {
         parent::buildForm($builder, $options);
         $builder->add('login', SubmitType::class,
-            [
-                'label' => 'Belépés',
-                'attr' => [
-                    'class' => "btn btn-success"
-                ]
-            ]
+                    [
+                        'label' => 'Belépés',
+                        'attr' => [
+                            'class' => "btn btn-success"
+                        ]
+                    ]
         )
+                ->add('password', PasswordType::class,
+                    [
+                        'label' => 'Jelszó',
+                    ]
+                )
             ;
     }
 

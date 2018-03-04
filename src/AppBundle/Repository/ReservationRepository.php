@@ -18,6 +18,7 @@ class ReservationRepository extends BaseRepository
         return $this->createQueryBuilder('reservation_table')
             ->where("reservation_table.reservation_day = '{$replacedDate}'")
             ->andWhere("reservation_table.surgery = '{$surgery}'")
-            ->getQuery();
+            ->getQuery()
+            ->getResult();
     }
 }

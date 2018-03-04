@@ -22,6 +22,10 @@ AppBundle\Entity\Patient:
             nullable: true
             unique: true
             column: ss_number
+        address:
+            type: string
+            length: 255
+            nullable: true
         phone_number:
             type: string
             length: 255
@@ -29,7 +33,12 @@ AppBundle\Entity\Patient:
         email:
             type: string
             length: 255
+            unique: true
             nullable: true
+        password:
+            type: string
+            length: 255
+            nullable: false
     oneToMany:
       reservations:
         targetEntity: Reservation

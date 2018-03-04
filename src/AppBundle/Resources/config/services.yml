@@ -10,6 +10,8 @@ parameters:
 
     app.breadcrumb.builder.class: 'AppBundle\Breadcrumb\BreadcrumbBuilder'
 
+    app.security.login_form_authenticator: 'AppBundle\Security\LoginFormAuthenticator'
+
 
 services:
 
@@ -32,7 +34,6 @@ services:
           index_1: 'AppBundle\Entity\Reservation'
 
 
-
     app.patient.factory:
         class: '%app.patient.factory.class%'
 
@@ -42,6 +43,13 @@ services:
     app.breadcrumb.builder:
         class: '%app.breadcrumb.builder.class%'
         arguments:
+            - '@router'
+
+    app.security.login_form_authenticator:
+        class: AppBundle\Security\LoginFormAuthenticator
+        arguments:
+            - '@form.factory'
+            - '@doctrine.orm.entity_manager'
             - '@router'
 
     app.security.voter.delete_any_reservation:

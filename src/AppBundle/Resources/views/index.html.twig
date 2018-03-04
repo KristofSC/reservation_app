@@ -24,12 +24,15 @@
 {% block surgerySelectBlock %}
 <div class="container-fluid">
     <div class="form-group">
-        <select id="surgerySelector" class="form-control col-sm-4 col-offset-2">
-            <option value="">Kérem válasszon!</option>
-            {% for key, surgery in surgeries %}
-                <option value="{{ key }}">{{ surgery }}</option>
-            {% endfor %}
-        </select>
+    {{ form_start(form) }}
+
+    {{ form_label(form.surgery) }}
+    {{ form_widget(form.surgery) }}
+
+    {{ form_label(form.reservation_date) }}
+    {{ form_widget(form.reservation_date) }}
+
+    {{ form_end(form) }}
     <div>
 </div>
 
@@ -39,7 +42,6 @@
 
     <div id="dateSelector" style="display:none;">
         <br>
-        <p id="selector">Dátum választása: <input data-config-datepicker="{{ dayLimit }}"  type="text" id="datepicker"></p>
             <div id="forwardButton" style="display: none;">
         <br>
         <button class="btn btn-success" id="toTableButton">Tovább a foglaláshoz!</button>

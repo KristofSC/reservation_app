@@ -12,7 +12,7 @@
     {% endblock %}
 
 {% block reservation_form %}
-
+        {{ sess }}
     {{ form_start(patientForm) }}
     {{ form_widget(patientForm) }}
     {{ form_end(patientForm) }}

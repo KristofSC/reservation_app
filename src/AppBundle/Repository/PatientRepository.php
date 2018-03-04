@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Patient;
+
 /**
  * PatientRepository
  *
@@ -10,4 +12,11 @@ namespace AppBundle\Repository;
  */
 class PatientRepository extends BaseRepository
 {
+    public function save(Patient $entity)
+    {
+        $em = $this->getEntityManager();
+
+        $em->persist($entity);
+        $em->flush();
+    }
 }
