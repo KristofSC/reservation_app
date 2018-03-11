@@ -2,10 +2,10 @@
 # https://symfony.com/doc/current/security.html
 security:
 
-    encoders:
-        AppBundle\Entity\Patient:
-            algorithm:
-                bcrypt
+#    encoders:
+#        AppBundle\Entity\Patient:
+#            algorithm:
+#                bcrypt
 
      # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
@@ -14,9 +14,10 @@ security:
                 class: 'AppBundle:Patient'
                 property: email
 
-#    access_control:
-#        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-#        - { path: ^/registration, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    access_control:
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/registration, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -32,7 +33,7 @@ security:
 
             logout:
                 path: /logout
-                target: /login
+                target: /
 
 
             # activate different ways to authenticate

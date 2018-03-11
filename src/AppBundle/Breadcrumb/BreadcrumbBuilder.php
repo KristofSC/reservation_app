@@ -24,19 +24,20 @@ class BreadcrumbBuilder
         return [$url => $title];
     }
 
-    public function addItemList(array $routeList, string $currentRoute)
+    public function addItemList(array $routeList, string $template): ?array
     {
         $breadCrumbItems = [];
 
         foreach ($routeList as $route => $title)
         {
-            $breadCrumbItems[] = [$this->router->generate($route, [], UrlGeneratorInterface::ABSOLUTE_URL) => $title];
+            $breadCrumbItems[][$route] = $title;
 
-            if($route == $currentRoute){
+            if($route == $template){
                 return $breadCrumbItems;
             }
         }
-        return $breadCrumbItems;
+
+        return null;
 
     }
 

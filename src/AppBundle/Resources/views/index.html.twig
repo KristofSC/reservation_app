@@ -1,6 +1,4 @@
-{% extends 'base.html.twig' %}
-
-    {% block breadcrumb %}
+{% block breadcrumb %}
 
         {% for arrays in breadcrumbs %}
             {% for url, title in arrays %}
@@ -8,7 +6,7 @@
             {% endfor %}
         {% endfor %}
 
-    {% endblock %}
+{% endblock %}
 
 {% block search_box %}
             <form action="{{ 'code-result' }}" method="POST">
@@ -38,21 +36,10 @@
 
 {% endblock %}
 
-{% block datepicker %}
-
-    <div id="dateSelector" style="display:none;">
-        <br>
-            <div id="forwardButton" style="display: none;">
-        <br>
-        <button class="btn btn-success" id="toTableButton">Tovább a foglaláshoz!</button>
-        </div>
-    </div>
-
-{% endblock %}
 
 {% block tableBlock %}
 
-    <div id="reservationTable"></div>
+    <div id="reservation-table"></div>
 
 {% endblock %}
 

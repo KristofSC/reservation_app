@@ -185,7 +185,7 @@ class Patient extends Entity implements EquatableInterface, UserInterface, \Seri
     /**
      * @return Reservation
      */
-    public function getReservations(): Reservation
+    public function getReservations(): ?Reservation
     {
         return $this->reservations;
     }

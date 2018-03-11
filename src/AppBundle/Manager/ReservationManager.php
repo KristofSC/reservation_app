@@ -11,9 +11,10 @@ class ReservationManager extends BaseManager
      */
     protected $repository;
 
-    public function findReservedDays(\DateTime $dateTime, string $surgery)
+    public function findReservedDays(\DateTime $dateTime, string $surgery): array
     {
-        return $this->repository->createReservationDayQuery($dateTime, $surgery);
+
+        return $this->repository->createReservationDayQuery($dateTime, $surgery)->getResult();
     }
 
 }

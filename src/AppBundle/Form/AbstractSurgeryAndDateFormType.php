@@ -4,9 +4,9 @@ namespace AppBundle\Form;
 
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class AbstractSurgeryAndDateFormType extends AbstractType
@@ -25,12 +25,11 @@ class AbstractSurgeryAndDateFormType extends AbstractType
                 [
                     'widget' => 'single_text',
                     'attr' => ['class' => 'datepicker'],
-                    'html5' => false,
-                    'label' => 'Válassz dátumot'
+                    'label' => 'Válassz dátumot',
                 ])
-            ->add('submit', SubmitType::class,
+            ->add('submit', ButtonType::class,
                 [
-                    'label' => 'Rögzítés'
+                    'label' => 'Rögzítés',
                 ]);
 
     }

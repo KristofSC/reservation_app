@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use Doctrine\ORM\Query;
+
 /**
  * ReservationRepository
  *
@@ -10,15 +12,14 @@ namespace AppBundle\Repository;
  */
 class ReservationRepository extends BaseRepository
 {
-    public function createReservationDayQuery(\DateTime $dateTime, string $surgery)
+    public function createReservationDayQuery(\DateTime $dateTime, string $surgery): Query
     {
-        $dateFormatter = $dateTime->format('"Y-m-d H:i:s"');
-        $replacedDate = str_replace("\"", "", $dateFormatter);
+        $formattedDate = $dateTime->format('"Y-m-d H:i:s"');
+        $replacedDate = str_replace("\"", "", $formattedDate);
 
         return $this->createQueryBuilder('reservation_table')
             ->where("reservation_table.reservation_day = '{$replacedDate}'")
             ->andWhere("reservation_table.surgery = '{$surgery}'")
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
     }
 }

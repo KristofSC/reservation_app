@@ -1,15 +1,14 @@
-{% block reservation_table %}
-
-    {% block breadcrumb %}
+{% block breadcrumb %}
 
         {% for arrays in breadcrumbs %}
             {% for url, title in arrays %}
-                {{ sess }}
-                <a href="{{ url }}" class="btn btn-info" role="button">{{ title }}</a>
+                <a id="{{ url }}" class="btn btn-info" role="button">{{ title }}</a>
             {% endfor %}
         {% endfor %}
 
-    {% endblock %}
+{% endblock %}
+
+{% block reservation_table %}
 
     <div id="table">
 

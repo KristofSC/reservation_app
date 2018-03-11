@@ -22,7 +22,7 @@
             <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
             <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.min.js"></script>
-
+            <script src="https://raw.github.com/defunkt/jquery-pjax/master/jquery.pjax.js"></script>
             <script src="{{ asset_url }}"></script>
             {% endjavascripts %}
         {% endblock %}
@@ -44,7 +44,6 @@
     <div class="row">
         <div class="col-md-6">
             {% block search_box%}{% endblock %}
-            {% block breadcrumb %}{% endblock %}
             {% block result_content %}{% endblock %}
         </div>
 
@@ -52,13 +51,14 @@
 
     <div class="row">
         <div class="col-sm-6 col-sm-offset-3">
+            {% block ajax %}{% endblock %}
             {% block loginForm %}{% endblock %}
             {% block registrationForm %}{% endblock %}
             {% block body %}{% block surgerySelectBlock %}{% endblock %}{% endblock %}
-            {% block datepicker %}{% endblock %}
             {% block select_button %}{% endblock %}
             {% block tableBlock %}{% endblock %}
             {% block formBlock %}{% endblock %}
+            {% block summary %}{% endblock %}
             {% block reservation_success %}{% endblock %}
         </div>
     </div>

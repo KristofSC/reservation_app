@@ -1,4 +1,3 @@
-
 $(function () {
             $(".datepicker").datepicker({
                     startDate: '0d',

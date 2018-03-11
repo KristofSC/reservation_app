@@ -16,12 +16,12 @@
         {{ form_label(loginForm.login) }}
         {{ form_widget(loginForm.login) }}
         {% if is_granted('delete_any_reservation') %}
-            <a href="/registration">Nincs azonosítom, regisztrálok!</a>
+            <a href="{{ path('registration') }}">Nincs azonosítom, regisztrálok!</a>
         {% endif %}
     </span>
 
     {% if error %}
-        <div>Felhasználó nem található!</div>
+        <div>Felhasználó vagy jelszó nem megfelelő!</div>
     {% endif %}
 
     <a class="btn btn-info" href="{{ path('registration') }}">Nincs még fiókom, regisztrálok!</a>
