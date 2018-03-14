@@ -1,3 +1,14 @@
+{% block info_box %}
+
+    {% if surgery is defined %}
+        {{ surgery }}
+    {% endif %}
+    {% if date is defined %}
+        {{ date }}
+    {% endif %}
+
+{% endblock %}
+
 {% block breadcrumb %}
 
     {% for arrays in breadcrumbs %}

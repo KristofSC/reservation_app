@@ -80,7 +80,11 @@ class DefaultController extends Controller
                 return new Response($renderedTemplate->getContent());
                 break;
             case 'reservation-table':
-                $renderedTemplate = $this->forward('AppBundle:Default:tableContent');
+                $renderedTemplate = $this->forward('AppBundle:Default:tableContent', [],
+                    [
+                        'surgery' => $request->query->get('surgery'),
+                        'date' => $request->query->get('date')
+                    ]);
                 return new Response($renderedTemplate->getContent());
                 break;
             case 'summary':
@@ -119,31 +123,32 @@ class DefaultController extends Controller
 
         $surgeryAndDateForm = $this->createForm(SurgeryAndDateFormType::class, $this->createSurgeryChoices());
 
-        $surgeryAndDateForm->handleRequest($request);
-
-        if ($surgeryAndDateForm->isSubmitted() && $surgeryAndDateForm->isValid()) {
-            $session = new Session();
-            $session->set('reservation_date', $surgeryAndDateForm->get('reservation_date')->getNormData());
-            $session->set('surgery', $surgeryAndDateForm->get('surgery')->getNormData());
-
-            return $this->redirectToRoute('ajax_router', 'reservation-table');
-        }
-
         $dateLimit = $this->getDateLimit();
 
+        if($request->getSession()->isStarted());
+        {
+            $surgery = $request->getSession()->get('surgery');
+            $date = $request->getSession()->get('date');
+        }
 
         return $this->render('AppBundle::surgeryDate.html.twig', [
             'form' => $surgeryAndDateForm->createView(),
             'breadcrumbs' => $breadcrumbs,
             'dayLimit' => $dateLimit,
+            'surgery' =>  $surgery ?? null,
+            'date' => $date ?? null
         ]);
     }
 
     public function tableContentAction(Request $request): Response
     {
-
         $breadcrumbs = $this->getBreadcrumbBuilder()->addItemList($this->getBreadcrumbs(), 'reservation_table');
-//
+
+        $session = new Session();
+        $session->set('surgery', $request->query->get('surgery'));
+        $session->set('date', $request->query->get('date'));
+
+        //
 //        $reservedDays = $this->getReservationManager()->findReservedDays($request->getSession()->get('reservation_date'), $request->getSession()->get('surgery'));
 
 //        $reservedHours = [];
@@ -154,6 +159,8 @@ class DefaultController extends Controller
         return $this->render('AppBundle::timeTable.html.twig', [
 //            'reserved' => $reservedHours,
             'breadcrumbs' => $breadcrumbs,
+            'surgery' => $request->getSession()->get('surgery'),
+            'date' =>  $request->getSession()->get('date')
         ]);
 
     }
@@ -162,11 +169,10 @@ class DefaultController extends Controller
     {
         $breadcrumbs = $this->getBreadcrumbBuilder()->addItemList($this->getBreadcrumbs(), 'summary_page');
 
-
         return $this->render('AppBundle::summary.html.twig', [
             'breadcrumbs' => $breadcrumbs,
-//            'surgery' => $request->getSession()->get('surgery'),
-//            'reservation_date' => $request->getSession()->get('reservation_date')
+            'surgery' => $request->getSession()->get('surgery'),
+            'date' => $request->getSession()->get('date')
         ]);
     }
 
