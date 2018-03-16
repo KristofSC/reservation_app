@@ -56,3 +56,6 @@ services:
         class: AppBundle\Security\Voter\DeleteAnyReservationVoter
         tags:
             - { name: security.voter }
+
+    app.facebook.oauth.provider:
+        class: AppBundle\Security\OAuth\FacebookOAuthProvider

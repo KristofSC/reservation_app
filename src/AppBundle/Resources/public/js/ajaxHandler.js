@@ -22,12 +22,6 @@ $(document).ready(function() {
             $( '#reservation-table' ).fadeIn(2000);
     });
 
-    $(document).on('click','#reservationButton',function() {
-        $('.ajax-switcher').attr('id', 'summary');
-        $( '#summary' ).load('ajax-router/summary').hide();
-        $( '#summary' ).fadeIn(2000);
-    });
-
     $(document).on('click','#surgery_date', function() {
         $('.ajax-switcher').attr('id', 'surgery-date');
         $( '#surgery-date' ).load('/ajax-router/surgery-date').hide();
@@ -40,11 +34,18 @@ $(document).ready(function() {
         $( '#reservation-table' ).fadeIn(2000);
     });
 
-    $(document).on('click','#summary', function() {
+    $(document).on('click','#reservationButton',function() {
         $('.ajax-switcher').attr('id', 'summary');
-        $( '#summary_page' ).load('/ajax-router/summary').hide();
-        $( '#summary_page' ).fadeIn(2000);
+        $( '#summary' ).load('ajax-router/summary?' + 'hour=' + $(this).data("hour")).hide();
+        $( '#summary' ).fadeIn(2000);
     });
+
+    $(document).on('click','#reserve',function() {
+        $('.ajax-switcher').attr('id', 'success');
+        $( '#success' ).load('ajax-router/reservation-success').hide();
+        $( '#success' ).fadeIn(2000);
+    });
+
 
 
 });

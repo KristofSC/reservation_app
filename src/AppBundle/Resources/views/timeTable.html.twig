@@ -1,10 +1,3 @@
-{% block info_box %}
-
-    <p>{{ surgery }}</p>
-    <p>{{ date }}</p>
-
-{% endblock %}
-
 {% block breadcrumb %}
 
         {% for arrays in breadcrumbs %}
@@ -12,6 +5,14 @@
                 <a id="{{ url }}" class="btn btn-info" role="button">{{ title }}</a>
             {% endfor %}
         {% endfor %}
+
+{% endblock %}
+
+{% block info_box %}
+
+    <p>{{ surgery }}</p>
+    <p>{{ date }}</p>
+    <p>{{ hour }}</p>
 
 {% endblock %}
 
@@ -29,9 +30,11 @@
                 <tr>
                     <td>{{ i }}:00</td>
                     {% if reserved[i] is defined %}
-                        <td>Foglalt</td>
+                        <td><input type="button" class="btn btn-danger" value="Foglalt" data-hour="{{ i }}" title="Nem foglalható időpont" disabled></td>
+                    {% elseif hour == i  %}
+                        <td><input type="button" class="btn btn-warning" id="reservationButton" value="Kiválasztva" data-hour="{{ i }}" title="Ön által kiválasztva, kattintásra tovább az összesítő oldalra"></td>
                     {% else %}
-                        <td><input type="button" class="btn btn-info" id="reservationButton" value="Lefoglalom" data-hour="{{ i }}"></td>
+                        <td><input type="button" class="btn btn-info" id="reservationButton" value="Lefoglalom" data-hour="{{ i }}" title="Időpont kiválasztása, kattintásra tovább az összesítő oldalra"></td>
                     {% endif %}
                 </tr>
             {% endfor %}

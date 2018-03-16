@@ -52,7 +52,7 @@ class DefaultController extends Controller
         $registrationForm->handleRequest($request);
 
         if ($registrationForm->isSubmitted() && $registrationForm->isValid()) {
-            $this->getPatientManager()->save($patient);
+            $this->getPatientManager()->doSaveEntity($patient);
 
             return $this->get('security.authentication.guard_handler')->authenticateUserAndHandleSuccess(
                 $patient,
@@ -88,31 +88,18 @@ class DefaultController extends Controller
                 return new Response($renderedTemplate->getContent());
                 break;
             case 'summary':
-                $renderedTemplate = $this->forward('AppBundle:Default:summary');
+                $renderedTemplate = $this->forward('AppBundle:Default:summary', [],
+                    [
+                        'hour' => $request->query->get('hour')
+                    ]);
+                return new Response($renderedTemplate->getContent());
+                break;
+            case 'reservation-success':
+                $renderedTemplate = $this->forward('AppBundle:Default:reservationSuccess');
                 return new Response($renderedTemplate->getContent());
                 break;
         }
 
-    }
-
-    protected function getBreadcrumbBuilder(): BreadcrumbBuilder
-    {
-        return $this->get('app.breadcrumb.builder');
-    }
-
-    protected function getBreadcrumbs(): array
-    {
-        return $this->container->getParameter('app.breadcrumb');
-    }
-
-    protected function getSurgeries(): array
-    {
-        return $this->container->getParameter('app.surgeries');
-    }
-
-    protected function getDateLimit(): int
-    {
-        return $this->container->getParameter('app.dateLimit');
     }
 
 
@@ -144,23 +131,36 @@ class DefaultController extends Controller
     {
         $breadcrumbs = $this->getBreadcrumbBuilder()->addItemList($this->getBreadcrumbs(), 'reservation_table');
 
-        $session = new Session();
-        $session->set('surgery', $request->query->get('surgery'));
-        $session->set('date', $request->query->get('date'));
+        if($request->query->get('surgery') !== null && $request->query->get('date') !== null){
+            $surgery = $request->query->get('surgery');
+            $date = $request->query->get('date');
+            $dateTime = new \DateTime($date);
 
-        //
-//        $reservedDays = $this->getReservationManager()->findReservedDays($request->getSession()->get('reservation_date'), $request->getSession()->get('surgery'));
+            $session = new Session();
 
-//        $reservedHours = [];
-//        foreach ($reservedDays as $reservedDay) {
-//            $reservedHours[$reservedDay->getHour()] = $reservedDay;
-//        }
+            $session->set('surgery', $surgery);
+            $session->set('date', $date);
+
+            $reservedDays = $this->getReservationManager()->findReservedDays($dateTime, $surgery);
+
+            $session->set('reserved', $reservedDays);
+        }
+
+        if($request->getSession()->has('hour')){
+            $hour = $request->getSession()->get('hour');
+        }
+
+        $reservedHours = [];
+        foreach ($request->getSession()->get('reserved') as $reservedDay) {
+            $reservedHours[$reservedDay->getHour()] = $reservedDay;
+        }
 
         return $this->render('AppBundle::timeTable.html.twig', [
-//            'reserved' => $reservedHours,
+            'reserved' => $reservedHours,
             'breadcrumbs' => $breadcrumbs,
             'surgery' => $request->getSession()->get('surgery'),
-            'date' =>  $request->getSession()->get('date')
+            'date' =>  $request->getSession()->get('date'),
+            'hour' => $hour ?? null
         ]);
 
     }
@@ -169,79 +169,56 @@ class DefaultController extends Controller
     {
         $breadcrumbs = $this->getBreadcrumbBuilder()->addItemList($this->getBreadcrumbs(), 'summary_page');
 
+        $hour = $request->getSession()->set('hour', $request->query->get('hour'));
+
         return $this->render('AppBundle::summary.html.twig', [
             'breadcrumbs' => $breadcrumbs,
             'surgery' => $request->getSession()->get('surgery'),
-            'date' => $request->getSession()->get('date')
+            'date' => $request->getSession()->get('date'),
+            'hour' => $request->getSession()->get('hour')
         ]);
+    }
+
+    public function reservationSuccessAction(Request $request): Response
+    {
+        $surgery = $request->getSession()->get('surgery');
+        $date = new \DateTime($request->getSession()->get('date'));
+        $hour = $request->getSession()->get('hour');
+        $code = $this->getRandomCode();
+
+        $reservation = $this->getReservationFactory()->create($date, $hour, $surgery, $this->getUser(), $code);
+
+        $this->getReservationManager()->doSaveEntity($reservation);
+
+
+        return $this->render('AppBundle::reservationSuccess.html.twig', [
+            'code' => $code
+        ]);
+    }
+
+    protected function getBreadcrumbBuilder(): BreadcrumbBuilder
+    {
+        return $this->get('app.breadcrumb.builder');
+    }
+
+    protected function getBreadcrumbs(): array
+    {
+        return $this->container->getParameter('app.breadcrumb');
+    }
+
+    protected function getSurgeries(): array
+    {
+        return $this->container->getParameter('app.surgeries');
+    }
+
+    protected function getDateLimit(): int
+    {
+        return $this->container->getParameter('app.dateLimit');
     }
 
     protected function getReservationManager(): ReservationManager
     {
         return $this->get('app.reservation.manager');
-    }
-
-    public function patientFormAction(Request $request): Response
-    {
-        $breadcrumbs = $this->getBreadcrumbBuilder()->addItemList($this->getBreadcrumbs(), $request->get('_route'));
-
-        $patientForm = $this->createForm(ReservationType::class);
-
-        $selectedSurgery = $request->get('surgery');
-        $selectedDate = $request->get('date');
-        $selectedHour = $request->get('hour');
-
-
-        $patientForm->get('surgeryName')->setData($selectedSurgery);
-        $patientForm->get('reservationDate')->setData($selectedDate);
-        $patientForm->get('reservationHour')->setData($selectedHour);
-
-        $patientForm->handleRequest($request);
-
-        if ($patientForm->isSubmitted() && $patientForm->isValid()) {
-
-            $reservationDatas = $request->request->all();
-
-            $em = $this->getDoctrine()->getManager();
-
-            $firstName = $reservationDatas['patient_data']['firstName'];
-            $lastName = $reservationDatas['patient_data']['lastName'];
-            $SSNumber = $reservationDatas['patient_data']['SSNumber'];
-            $phoneNumber = $reservationDatas['patient_data']['phoneNumber'];
-            $email = $reservationDatas['patient_data']['email'];
-
-            $patientFactory = $this->get('app.patient.factory');
-
-            $patientObject = $patientFactory->create($firstName, $lastName, $SSNumber, $phoneNumber, $email);
-
-            $em->persist($patientObject);
-            $em->flush();
-
-            $selectedSurgery = $reservationDatas['patient_data']['surgeryName'];
-            $selectedDate = $reservationDatas['patient_data']['reservationDate'];
-            $selectedHour = $reservationDatas['patient_data']['reservationHour'];
-
-            $randomcode = $this->getRandomCode();
-
-            $dateTimeObject = new \DateTime($selectedDate);
-
-            $reservationObject = $this->getReservationFactory()->create($dateTimeObject, $selectedHour, $selectedSurgery, $patientObject, $randomcode);
-
-            $em->persist($reservationObject);
-            $em->flush();
-
-            return $this->render('AppBundle::reservationSuccess.html.twig', [
-                'patientData' => $patientForm->getData(),
-                'breadcrumbs' => $breadcrumbs,
-                'code' => $reservationObject->getCode()
-            ]);
-        }
-
-        return $this->render('AppBundle::patientForm.html.twig', [
-            'patientForm' => $patientForm->createView(),
-            'breadcrumbs' => $breadcrumbs,
-            'sess' => $get = $request->getSession()->get('selected')
-        ]);
     }
 
     protected function getRandomCode(): string

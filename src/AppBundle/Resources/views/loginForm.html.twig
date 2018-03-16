@@ -1,6 +1,41 @@
 {% extends 'base.html.twig' %}
 {% form_theme loginForm 'bootstrap_3_layout.html.twig' %}
 
+{% block fbjavascript %}
+    <script>
+
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId      : '1793619344041990',
+                cookie     : true,
+                xfbml      : true,
+                version    : 'v2.12'
+            });
+
+            FB.AppEvents.logPageView();
+
+            var finished_rendering = function() {
+                console.log("finished rendering plugins");
+                var spinner = document.getElementById("spinner");
+                spinner.removeAttribute("style");
+                spinner.removeChild(spinner.childNodes[0]);
+            }
+            FB.Event.subscribe('xfbml.render', finished_rendering);
+
+        };
+
+        (function(d, s, id){
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {return;}
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+
+    </script>
+
+{% endblock %}
+
 
 {% block loginForm %}
 
@@ -19,6 +54,24 @@
             <a href="{{ path('registration') }}">Nincs azonosítom, regisztrálok!</a>
         {% endif %}
     </span>
+
+    <div id="spinner"
+         style="
+        background: #4267b2;
+        border-radius: 5px;
+        color: white;
+        height: 30px;
+        text-align: center;
+        width: 150px;">
+        Loading
+        <div
+                class="fb-login-button"
+                data-max-rows="1"
+                data-size="medium"
+                data-button-type="continue_with"
+                data-use-continue-as="true"
+        ></div>
+    </div>
 
     {% if error %}
         <div>Felhasználó vagy jelszó nem megfelelő!</div>
