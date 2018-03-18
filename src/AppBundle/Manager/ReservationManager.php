@@ -24,4 +24,14 @@ class ReservationManager extends BaseManager
         $this->save($entity);
     }
 
+    public function findOneBy(array $criteria)
+    {
+        return $this->repository->findOneBy($criteria);
+    }
+
+    public function removeReservationByHour(int $id, int $hour)
+    {
+        $this->repository->removeReservationByHour($id, $hour);
+    }
+
 }

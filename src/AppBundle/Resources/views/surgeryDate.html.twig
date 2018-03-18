@@ -1,11 +1,14 @@
 {% block info_box %}
 
     {% if surgery is defined %}
-        {{ surgery }}
+        <span>Rendelő: <span class="infoBox">{{ surgery }}</span></span>
     {% endif %}
+
     {% if date is defined %}
-        {{ date }}
+        <span>Nap:  <span class="infoBox">{{ date }}</span>  </span>
     {% endif %}
+
+    <br>
 
 {% endblock %}
 

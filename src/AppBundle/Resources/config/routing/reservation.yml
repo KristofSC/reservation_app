@@ -6,7 +6,6 @@ ajax_router:
     path: /ajax-router/{template}
     defaults: { _controller: "AppBundle:Default:ajaxRouter", template: null }
 
-
 code_result:
     path: /code-result
     defaults: { _controller: "AppBundle:Default:codeSearchResult" }

@@ -69,6 +69,8 @@ class DefaultController extends Controller
     public function indexAction(): Response
     {
         return $this->render('AppBundle::ajaxView.html.twig', [
+            'firstname' => $this->getUser()->getFirstname(),
+            'lastname' => $this->getUser()->getLastname(),
         ]);
     }
 
@@ -96,6 +98,14 @@ class DefaultController extends Controller
                 break;
             case 'reservation-success':
                 $renderedTemplate = $this->forward('AppBundle:Default:reservationSuccess');
+                return new Response($renderedTemplate->getContent());
+                break;
+            case 'delete-reservation':
+                $renderedTemplate = $this->forward('AppBundle:Default:deleteReservation', [],
+                    [
+                        'id' => $request->query->get('id'),
+                        'hour' => $request->query->get('hour')
+                    ]);
                 return new Response($renderedTemplate->getContent());
                 break;
         }
@@ -165,11 +175,51 @@ class DefaultController extends Controller
 
     }
 
+    public function deleteReservationAction(Request $request): Response
+    {
+        $breadcrumbs = $this->getBreadcrumbBuilder()->addItemList($this->getBreadcrumbs(), 'reservation_table');
+
+        $id = $request->query->get('id');
+        $hour = $request->query->get('hour');
+
+        $this->getReservationManager()->removeReservationByHour($id, $hour);
+
+        $surgery = $request->getSession()->get('surgery');
+        $date = $request->getSession()->get('date');
+
+        $dateTime = new \DateTime($date);
+
+        $reservedDays = $this->getReservationManager()->findReservedDays($dateTime, $surgery);
+
+        $request->getSession()->set('reserved', $reservedDays);
+
+
+        if($request->getSession()->has('hour')){
+            $hour = $request->getSession()->get('hour');
+        }
+
+        $reservedHours = [];
+        foreach ($request->getSession()->get('reserved') as $reservedDay) {
+            $reservedHours[$reservedDay->getHour()] = $reservedDay;
+        }
+
+
+        return $this->render('AppBundle::timeTable.html.twig', [
+            'reserved' => $reservedHours,
+            'breadcrumbs' => $breadcrumbs,
+            'surgery' => $request->getSession()->get('surgery'),
+            'date' =>  $request->getSession()->get('date'),
+            'hour' => $hour ?? null
+        ]);
+
+
+    }
+
     public function summaryAction(Request $request): Response
     {
         $breadcrumbs = $this->getBreadcrumbBuilder()->addItemList($this->getBreadcrumbs(), 'summary_page');
 
-        $hour = $request->getSession()->set('hour', $request->query->get('hour'));
+        $request->getSession()->set('hour', $request->query->get('hour'));
 
         return $this->render('AppBundle::summary.html.twig', [
             'breadcrumbs' => $breadcrumbs,
@@ -239,11 +289,9 @@ class DefaultController extends Controller
 
     public function codeSearchResultAction(Request $request): Response
     {
-        $reservationRepository = $this->getReservationManager();
-
         $searchInput = trim($request->get('searchInput'));
 
-        $reservationObject = $reservationRepository->findOneBy(['code' => $searchInput]);
+        $reservationObject = $this->getReservationManager()->findOneBy(['code' => $searchInput]);
 
         return $this->render('AppBundle::codeSearchResult.html.twig', [
             'reservation' => $reservationObject

@@ -1,3 +1,14 @@
+{% block info_box %}
+
+    <span>Rendelő: <span class="infoBox">{{ surgery }}</span></span>
+    <span>Nap:  <span class="infoBox">{{ date }}</span>  </span>
+    {% if hour is defined %}
+    <span>Óra:  <span class="infoBox">{{ hour }}</span>  </span>
+    {% endif %}
+    <br>
+
+{% endblock %}
+
 {% block breadcrumb %}
 
         {% for arrays in breadcrumbs %}
@@ -8,18 +19,9 @@
 
 {% endblock %}
 
-{% block info_box %}
-
-    <p>{{ surgery }}</p>
-    <p>{{ date }}</p>
-    <p>{{ hour }}</p>
-
-{% endblock %}
-
 {% block reservation_table %}
 
     <div id="table">
-
         <table class="table table-striped">
             <thead>
             <th>Óra</th>
@@ -30,7 +32,40 @@
                 <tr>
                     <td>{{ i }}:00</td>
                     {% if reserved[i] is defined %}
-                        <td><input type="button" class="btn btn-danger" value="Foglalt" data-hour="{{ i }}" title="Nem foglalható időpont" disabled></td>
+                        <td><input type="button" class="btn btn-danger" value="Foglalt" data-hour="{{ i }}" title="Nem foglalható időpont" disabled>
+                        {% if is_granted("delete", reserved[i]) %}
+                            <td>
+                                <a data-reservation-id="{{ reserved[i].id }}" data-hour="{{ i }}" id="reservation_delete" type="button" class="btn btn-danger btn-xs">  <!-- data-toggle="modal" data-target="#deleteModal"-->
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </a>
+                            </td>
+
+
+                            {#<!-- Modal -->#}
+                            {#<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">#}
+                                {#<div class="modal-dialog" role="document">#}
+                                    {#<div class="modal-content">#}
+                                        {#<div class="modal-header">#}
+                                            {#<h5 class="modal-title" id="deleteModal">Foglalás törlése</h5>#}
+                                            {#<button type="button" class="close" data-dismiss="modal" aria-label="Close">#}
+                                                {#<span aria-hidden="true">&times;</span>#}
+                                            {#</button>#}
+                                        {#</div>#}
+                                        {#<div class="modal-body">#}
+                                            {#Biztos törölni akarja korábbi foglalását?#}
+                                        {#</div>#}
+                                        {#<div class="modal-footer">#}
+                                            {#<button type="button" class="btn btn-secondary" data-dismiss="modal">Mégse</button>#}
+                                            {#<a id="delete_reservation" type="button" data-reservation-id="{{ reserved[i].id }} data-reservation-hour="{{ hour }}"#}
+                                            {#class="btn btn-success">Megerősít</a>#}
+                                        {#</div>#}
+                                    {#</div>#}
+                                {#</div>#}
+                            {#</div>#}
+
+                        {% else %}
+                            </td>
+                        {% endif %}
                     {% elseif hour == i  %}
                         <td><input type="button" class="btn btn-warning" id="reservationButton" value="Kiválasztva" data-hour="{{ i }}" title="Ön által kiválasztva, kattintásra tovább az összesítő oldalra"></td>
                     {% else %}

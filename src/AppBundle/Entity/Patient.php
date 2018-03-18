@@ -145,7 +145,7 @@ class Patient extends Entity implements EquatableInterface, UserInterface, \Seri
      *
      * @return int
      */
-    public function getSsNumber(): ?string
+    public function getSsNumber()
     {
         return $this->ss_number;
     }
@@ -153,7 +153,7 @@ class Patient extends Entity implements EquatableInterface, UserInterface, \Seri
     /**
      * @return string
      */
-    public function getPhoneNumber(): ?string
+    public function getPhoneNumber()
     {
         return $this->phone_number;
     }
@@ -185,7 +185,7 @@ class Patient extends Entity implements EquatableInterface, UserInterface, \Seri
     /**
      * @return Reservation
      */
-    public function getReservations(): ?Reservation
+    public function getReservations()
     {
         return $this->reservations;
     }
@@ -198,27 +198,27 @@ class Patient extends Entity implements EquatableInterface, UserInterface, \Seri
         $this->reservations = $reservations;
     }
 
-    public function getPassword(): ?string
+    public function getPassword()
     {
         return $this->password;
     }
 
-    public function setPassword(string $password): void
+    public function setPassword(string $password)
     {
         $this->password = $password;
     }
 
-    public function getAddress(): ?string
+    public function getAddress()
     {
         return $this->address;
     }
 
-    public function setAddress(string $address): void
+    public function setAddress(string $address)
     {
         $this->address = $address;
     }
 
-    public function serialize(): ?string
+    public function serialize()
     {
         return serialize(array(
             $this->id,
@@ -228,7 +228,7 @@ class Patient extends Entity implements EquatableInterface, UserInterface, \Seri
         ));
     }
 
-    public function unserialize($serialized): void
+    public function unserialize($serialized)
     {
         list (
             $this->id,

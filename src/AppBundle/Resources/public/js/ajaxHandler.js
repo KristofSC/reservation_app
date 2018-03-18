@@ -34,9 +34,15 @@ $(document).ready(function() {
         $( '#reservation-table' ).fadeIn(2000);
     });
 
+    $(document).on('click','#reservation_delete',function() {
+        $('.ajax-switcher').attr('id', 'reservation-table');
+        $( '#reservation-table' ).load('ajax-router/delete-reservation?' + 'id=' + $(this).data('reservation-id') + '&hour=' + $(this).data('hour')).hide();
+        $( '#reservation-table' ).fadeIn(2000);
+    });
+
     $(document).on('click','#reservationButton',function() {
         $('.ajax-switcher').attr('id', 'summary');
-        $( '#summary' ).load('ajax-router/summary?' + 'hour=' + $(this).data("hour")).hide();
+        $( '#summary' ).load('ajax-router/summary?' + 'hour=' + $(this).data('hour')).hide();
         $( '#summary' ).fadeIn(2000);
     });
 

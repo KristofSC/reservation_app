@@ -21,7 +21,8 @@ class FacebookOAuthProvider implements UserProviderInterface, AccountConnectorIn
      */
     public function connect(UserInterface $user, UserResponseInterface $response)
     {
-        // TODO: Implement connect() method.
+        dump('kasdd');
+        die;
     }
 
     /**
@@ -35,7 +36,8 @@ class FacebookOAuthProvider implements UserProviderInterface, AccountConnectorIn
      */
     public function loadUserByOAuthUserResponse(UserResponseInterface $response)
     {
-        // TODO: Implement loadUserByOAuthUserResponse() method.
+        dump('kasdd');
+        die;
     }
 
     /**
@@ -52,7 +54,8 @@ class FacebookOAuthProvider implements UserProviderInterface, AccountConnectorIn
      */
     public function loadUserByUsername($username)
     {
-        // TODO: Implement loadUserByUsername() method.
+        dump('kasdd');
+        die;
     }
 
     /**
@@ -71,7 +74,8 @@ class FacebookOAuthProvider implements UserProviderInterface, AccountConnectorIn
      */
     public function refreshUser(UserInterface $user)
     {
-        // TODO: Implement refreshUser() method.
+        dump('kasdd');
+        die;
     }
 
     /**
@@ -83,6 +87,7 @@ class FacebookOAuthProvider implements UserProviderInterface, AccountConnectorIn
      */
     public function supportsClass($class)
     {
-        // TODO: Implement supportsClass() method.
+        dump('kasdd');
+        die;
     }
 }

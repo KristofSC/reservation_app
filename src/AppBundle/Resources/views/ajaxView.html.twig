@@ -2,8 +2,10 @@
 
 {% block ajax %}
     <div id="welcome-box">
-        <div>Üdv az oldalon xy!</div>
-        <a role="button" id="welcome" class="btn btn-info">Kezdjük!</a>
+        <div>Kedves <span class="infoBox">{{ firstname }} {{ lastname }}</span>!</div>
+        <div>Üdvözöljük időpontfoglaló alkalmazásunkban!
+            Lemondás a lefoglalt időpont előtt legkésőbb 24 órával lehetséges.</div>
+        <a role="button" id="welcome" class="btn btn-info">Időpontfoglalás elkezdése!</a>
     </div>
 
     <div class="ajax-switcher"></div>

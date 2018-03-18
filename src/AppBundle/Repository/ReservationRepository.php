@@ -22,4 +22,15 @@ class ReservationRepository extends BaseRepository
             ->andWhere("reservation_table.surgery = '{$surgery}'")
             ->getQuery();
     }
+
+    public function removeReservationByHour(int $id, int $hour){
+
+        $criteria =  ['id' => $id, 'hour' => $hour];
+
+        $reservation = $this->findOneBy($criteria);
+
+        $this->getEntityManager()->remove($reservation);
+        $this->getEntityManager()->flush();
+
+    }
 }

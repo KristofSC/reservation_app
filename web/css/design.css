@@ -20,5 +20,14 @@ a, button{
 }
 
 #logout-box{
+    margin: -0.5%;
     text-align: right;
+}
+
+.infoBox{
+    color: #880000
+}
+
+#searchForm{
+    display: inline;
 }

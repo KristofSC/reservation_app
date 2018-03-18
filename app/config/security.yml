@@ -9,6 +9,15 @@ security:
 
      # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
+        chain_provider:
+            chain:
+                providers: [in_memory, db_provider]
+        in_memory:
+            memory:
+                users:
+                    admin@gmail.com:
+                        password: admin123
+                        roles: 'ROLE_ADMIN'
         db_provider:
             entity:
                 class: 'AppBundle:Patient'

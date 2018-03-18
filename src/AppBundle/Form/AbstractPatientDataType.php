@@ -15,7 +15,6 @@ class AbstractPatientDataType extends AbstractType
             ->add('email', EmailType::class,
                 [
                     'label' => 'E-mail cím: ',
-
                 ]);
     }
 
