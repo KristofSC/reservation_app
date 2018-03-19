@@ -1,17 +1,3 @@
-{% block info_box %}
-
-    {% if surgery is defined %}
-        <span>Rendelő: <span class="infoBox">{{ surgery }}</span></span>
-    {% endif %}
-
-    {% if date is defined %}
-        <span>Nap:  <span class="infoBox">{{ date }}</span>  </span>
-    {% endif %}
-
-    <br>
-
-{% endblock %}
-
 {% block breadcrumb %}
 
     {% for arrays in breadcrumbs %}
@@ -26,6 +12,7 @@
 
     <div class="container-fluid" id="surgery-date">
     <div class="form-group">
+
     {{ form_start(form) }}
 
     {{ form_label(form.surgery) }}

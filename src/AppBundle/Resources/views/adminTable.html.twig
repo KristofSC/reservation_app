@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+{% form_theme dateRangeForm 'bootstrap_3_layout.html.twig' %}
+
+{% block adminSearch %}
+
+    <div>Admin felület</div>
+
+    {{ form_start(dateRangeForm) }}
+
+    {{ form_label(dateRangeForm.surgery) }}
+    {{ form_widget(dateRangeForm.surgery) }}
+
+    {{ form_label(dateRangeForm.from) }}
+    {{ form_widget(dateRangeForm.from) }}
+
+    {{ form_label(dateRangeForm.to) }}
+    {{ form_widget(dateRangeForm.to) }}
+
+    {{ form_label(dateRangeForm.list) }}
+    {{ form_widget(dateRangeForm.list) }}
+
+    {{ form_rest(dateRangeForm) }}
+
+{% endblock %}
+
+{% block adminTable %}
+
+    {% if days is defined %}
+    {% for day in days %}
+        <p>{{ day.hour }}</p>
+    {% endfor %}
+    {% endif %}
+
+{% endblock %}

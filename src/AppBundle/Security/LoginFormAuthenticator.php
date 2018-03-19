@@ -4,11 +4,13 @@ namespace AppBundle\Security;
 
 use AppBundle\Form\LoginType;
 use Doctrine\ORM\EntityManager;
+use Symfony\Bridge\Doctrine\Security\User\EntityUserProvider;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\User\InMemoryUserProvider;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
@@ -67,10 +69,15 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        $email = $credentials['email'];
-
-        return $this->em->getRepository('AppBundle:Patient')->findOneBy( ['email' => $email]);
-
+        foreach ($userProvider->getProviders() as $provider){
+            if($provider instanceof InMemoryUserProvider &&
+                $credentials['email'] === $provider->loadUserByUsername('admin@gmail.com')->getUsername() ){
+                return $provider->loadUserByUsername('admin@gmail.com');
+            } elseif ($provider instanceof EntityUserProvider){
+                $email = $credentials['email'];
+                return $this->em->getRepository('AppBundle:Patient')->findOneBy( ['email' => $email]);
+            }
+        }
     }
 
     public function checkCredentials($credentials, UserInterface $user)

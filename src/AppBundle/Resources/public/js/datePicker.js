@@ -5,5 +5,10 @@ $(function () {
                     format: 'yyyy-mm-dd'
                 }
             );
+        $(".datepicker_range").datepicker({
+                startDate: '0d',
+                format: 'yyyy-mm-dd'
+            }
+        );
         }
     );

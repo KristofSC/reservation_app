@@ -19,6 +19,13 @@ class ReservationManager extends BaseManager
         return $query->execute();
     }
 
+    public function findByDateInterval(string $surgery, \DateTime $from, \DateTime $to)
+    {
+        $query = $this->repository->createDateIntervalQuery($surgery, $from, $to);
+
+        return $query->execute();
+    }
+
     public function doSaveEntity(Reservation $entity)
     {
         $this->save($entity);

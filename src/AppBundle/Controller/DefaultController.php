@@ -6,6 +6,7 @@ use AppBundle\Breadcrumb\BreadcrumbBuilder;
 use AppBundle\Entity\Patient;
 use AppBundle\Factory\PatientFactory;
 use AppBundle\Factory\ReservationFactory;
+use AppBundle\Form\DateRangeForm;
 use AppBundle\Form\LoginType;
 use AppBundle\Form\RegistrationType;
 use AppBundle\Form\SurgeryAndDateFormType;
@@ -13,7 +14,6 @@ use AppBundle\Manager\PatientManager;
 use AppBundle\Manager\ReservationManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Form\ReservationType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 
@@ -68,9 +68,38 @@ class DefaultController extends Controller
 
     public function indexAction(): Response
     {
-        return $this->render('AppBundle::ajaxView.html.twig', [
-            'firstname' => $this->getUser()->getFirstname(),
-            'lastname' => $this->getUser()->getLastname(),
+        if($this->getUser() instanceof Patient){
+            return $this->render('AppBundle::ajaxView.html.twig', [
+                'firstname' => $this->getUser()->getFirstname(),
+                'lastname' => $this->getUser()->getLastname(),
+            ]);
+        }
+
+        return $this->redirectToRoute('admin');
+    }
+
+    public function adminTableAction(Request $request): Response
+    {
+        $dateRangeForm = $this->createForm(DateRangeForm::class, $this->createSurgeryChoices());
+
+        $dateRangeForm->handleRequest($request);
+
+        if ($dateRangeForm->isSubmitted() && $dateRangeForm->isValid()) {
+
+            $surgery = $dateRangeForm['surgery']->getData();
+            $from = $dateRangeForm['from']->getData();
+            $to = $dateRangeForm['to']->getData();
+
+            $days = $this->getReservationManager()->findByDateInterval($surgery, $from, $to);
+
+            return $this->render('AppBundle::adminTable.html.twig', [
+                'dateRangeForm' => $dateRangeForm->createView(),
+                'days' => $days
+            ]);
+        }
+
+        return $this->render('AppBundle::adminTable.html.twig', [
+            'dateRangeForm' => $dateRangeForm->createView(),
         ]);
     }
 
@@ -242,6 +271,8 @@ class DefaultController extends Controller
 
 
         return $this->render('AppBundle::reservationSuccess.html.twig', [
+            'firstName' => $this->getUser()->getFirstname(),
+            'lastName' => $this->getUser()->getLastname(),
             'code' => $code
         ]);
     }
@@ -279,7 +310,7 @@ class DefaultController extends Controller
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $shuffled = str_shuffle($characters);
 
-        return substr($shuffled, 0, 5) . $nowTimeStamp;
+        return substr($shuffled, 0, 3) . $nowTimeStamp;
     }
 
     protected function getReservationFactory(): ReservationFactory

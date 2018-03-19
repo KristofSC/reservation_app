@@ -9,7 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class AbstractSurgeryAndDateFormType extends AbstractType
+abstract class AbstractSurgeryAndDateFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

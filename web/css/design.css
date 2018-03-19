@@ -20,8 +20,8 @@ a, button{
 }
 
 #logout-box{
-    margin: -0.5%;
-    text-align: right;
+    margin-bottom: -1%;
+    margin-right: -9%;
 }
 
 .infoBox{
@@ -30,4 +30,6 @@ a, button{
 
 #searchForm{
     display: inline;
+    margin-left: -8%;
+    margin-bottom: -10%;
 }
