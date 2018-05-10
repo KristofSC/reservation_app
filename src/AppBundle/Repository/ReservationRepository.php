@@ -23,7 +23,7 @@ class ReservationRepository extends BaseRepository
             ->getQuery();
     }
 
-    public function createDateIntervalQuery(string $surgery, \DateTime $fromTime, \DateTime $toTime): Query
+    public function createDateIntervalQuery( \DateTime $fromTime, \DateTime $toTime): Query
     {
         $formattedFromDate = $fromTime->format('"Y-m-d H:i:s"');
         $formattedToDate = $toTime->format('"Y-m-d H:i:s"');
@@ -34,7 +34,6 @@ class ReservationRepository extends BaseRepository
         return $this->createQueryBuilder('reservation_table')
             ->where("reservation_table.reservation_day >= '{$replacedFromDate}'")
             ->andWhere("reservation_table.reservation_day <= '{$replacedToDate}'")
-            ->andWhere("reservation_table.surgery = '{$surgery}'")
             ->getQuery();
     }
 

@@ -33,3 +33,12 @@ a, button{
     margin-left: -8%;
     margin-bottom: -10%;
 }
+
+#summary-title{
+    text-align: center;
+    margin-top: 1%;
+}
+
+#reserve{
+    text-align: center;
+}

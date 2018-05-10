@@ -86,11 +86,13 @@ class DefaultController extends Controller
 
         if ($dateRangeForm->isSubmitted() && $dateRangeForm->isValid()) {
 
-            $surgery = $dateRangeForm['surgery']->getData();
             $from = $dateRangeForm['from']->getData();
             $to = $dateRangeForm['to']->getData();
 
-            $days = $this->getReservationManager()->findByDateInterval($surgery, $from, $to);
+            $days = $this->getReservationManager()->findByDateInterval($from, $to);
+
+            dump($days);
+            die;
 
             return $this->render('AppBundle::adminTable.html.twig', [
                 'dateRangeForm' => $dateRangeForm->createView(),
@@ -151,18 +153,11 @@ class DefaultController extends Controller
 
         $dateLimit = $this->getDateLimit();
 
-        if($request->getSession()->isStarted());
-        {
-            $surgery = $request->getSession()->get('surgery');
-            $date = $request->getSession()->get('date');
-        }
 
         return $this->render('AppBundle::surgeryDate.html.twig', [
             'form' => $surgeryAndDateForm->createView(),
             'breadcrumbs' => $breadcrumbs,
             'dayLimit' => $dateLimit,
-            'surgery' =>  $surgery ?? null,
-            'date' => $date ?? null
         ]);
     }
 
@@ -197,7 +192,7 @@ class DefaultController extends Controller
         return $this->render('AppBundle::timeTable.html.twig', [
             'reserved' => $reservedHours,
             'breadcrumbs' => $breadcrumbs,
-            'surgery' => $request->getSession()->get('surgery'),
+            'surgery' => array_search($request->getSession()->get('surgery'), $this->getSurgeries()),
             'date' =>  $request->getSession()->get('date'),
             'hour' => $hour ?? null
         ]);
@@ -250,15 +245,18 @@ class DefaultController extends Controller
 
         $request->getSession()->set('hour', $request->query->get('hour'));
 
+        $dayOfWeek = $this->getDayTranslatedDayOfWeek(date("l", strtotime($request->getSession()->get('date'))));
+
         return $this->render('AppBundle::summary.html.twig', [
             'breadcrumbs' => $breadcrumbs,
-            'surgery' => $request->getSession()->get('surgery'),
+            'surgery' => $surgery = array_search($request->getSession()->get('surgery'), $this->getSurgeries()),
             'date' => $request->getSession()->get('date'),
-            'hour' => $request->getSession()->get('hour')
+            'hour' => $request->getSession()->get('hour'),
+            'dayOfWeek' => $dayOfWeek
         ]);
     }
 
-    public function reservationSuccessAction(Request $request): Response
+    public function reservationSuccessAction(Request $request, \Swift_Mailer $mailer): Response
     {
         $surgery = $request->getSession()->get('surgery');
         $date = new \DateTime($request->getSession()->get('date'));
@@ -269,6 +267,25 @@ class DefaultController extends Controller
 
         $this->getReservationManager()->doSaveEntity($reservation);
 
+
+
+
+        $email = new \Swift_Message('Sikeres időpont foglalás!');
+
+        $email->setFrom('scytha87@gmail.com');
+        $email->setTo('scytha87@gmail.com');
+        $email->setBody(
+        $this->renderView(
+            'AppBundle::successEmail.html.twig',
+            [
+                'lastname' => $this->getUser()->getLastname(),
+                'firstName' => $this->getUser()->getFirstName()
+            ]
+        ),
+        'text/html'
+    );
+
+        $mailer->send($email);
 
         return $this->render('AppBundle::reservationSuccess.html.twig', [
             'firstName' => $this->getUser()->getFirstname(),
@@ -325,8 +342,9 @@ class DefaultController extends Controller
         $reservationObject = $this->getReservationManager()->findOneBy(['code' => $searchInput]);
 
         return $this->render('AppBundle::codeSearchResult.html.twig', [
-            'reservation' => $reservationObject
-        ]);
+            'reservation' => $reservationObject,
+            'surgery' => array_search($reservationObject->getSurgery(), $this->getSurgeries())
+            ]);
     }
 
     protected function getPatientManager(): PatientManager
@@ -339,9 +357,29 @@ class DefaultController extends Controller
         return $this->get('app.patient.factory');
     }
 
-    protected function createSurgeryChoices()
+    protected function createSurgeryChoices(): array
     {
-        return ['choices' => $this->getSurgeries()];
+        return ['choices' => ['Válassz rendelőt' => $this->getSurgeries()]];
+    }
+
+    protected function getDayTranslatedDayOfWeek(string $daysOfWeek): string
+    {
+            switch ($daysOfWeek){
+                case 'Monday':
+                    return 'Hétfő';
+                case 'Tuesday':
+                    return 'Kedd';
+                case 'Wednesday':
+                    return 'Szerda';
+                case 'Thursday':
+                    return 'Csütörtök';
+                case 'Friday':
+                    return 'Péntek';
+                case 'Saturday':
+                    return 'Szombat';
+                case 'Sunday':
+                    return 'Vasárnap';
+        }
     }
 
 }

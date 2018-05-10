@@ -9,12 +9,12 @@
 {% endblock %}
 
 {% block info_box %}
-
-    <div>Összesítő oldal</div>
+    <div id="summary-title">Összesítő oldal</div>
+    <br>
     <div>Rendelő neve:</div>
     <p>{{ surgery }}</p>
     <div>Időpont:</div>
-    <p>{{ date }} {{ hour }}:00 óra</p>
+    <p>{{ date }} {{ hour }}:00 óra ({{ dayOfWeek }})</p>
 
     <button id="reserve" type="button" class="btn btn-success" title="Időpont foglalás véglegesítés">Időpont lefoglalása</button>
 

@@ -59,3 +59,8 @@ services:
 
     app.facebook.oauth.provider:
         class: AppBundle\Security\OAuth\FacebookOAuthProvider
+
+    app.email.sender:
+        class: AppBundle\Email\EmailSender
+        arguments:
+            - '@swiftmailer.mailer'

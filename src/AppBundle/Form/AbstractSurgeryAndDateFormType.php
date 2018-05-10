@@ -17,15 +17,16 @@ abstract class AbstractSurgeryAndDateFormType extends AbstractType
         $builder
             ->add('surgery', ChoiceType::class,
             [
-                'label' => 'Válassz rendelőt',
-                'choices' => $options['data']['choices']
+                'label' => 'Rendelők:',
+                'choices' => $options['data']['choices'],
+                'data' => 'friend'
             ]
         )
             ->add('reservation_date', DateType::class,
                 [
                     'widget' => 'single_text',
                     'attr' => ['class' => 'datepicker'],
-                    'label' => 'Válassz dátumot',
+                    'label' => 'Válassz dátumot:',
                 ])
             ->add('submit', ButtonType::class,
                 [

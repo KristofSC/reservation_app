@@ -10,11 +10,7 @@ class DateRangeForm extends AbstractDateRangeFormType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);
-        $builder->add('surgery', ChoiceType::class,
-        [
-            'label' => 'Válassz rendelőt',
-            'choices' => $options['data']['choices']
-        ]);
+
     }
 
 }

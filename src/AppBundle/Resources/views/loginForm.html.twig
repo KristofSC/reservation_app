@@ -55,8 +55,14 @@
         {% endif %}
     </span>
 
+    {% if error %}
+        <div>Felhasználó vagy jelszó nem megfelelő!</div>
+    {% endif %}
+
+    <a class="btn btn-info" href="{{ path('registration') }}">Nincs még fiókom, regisztrálok!</a>
+
     <span id="spinner"
-         style="
+          style="
         background: #4267b2;
         border-radius: 5px;
         color: white;
@@ -72,11 +78,5 @@
                 data-use-continue-as="true"
         ></span>
     </span>
-
-    {% if error %}
-        <div>Felhasználó vagy jelszó nem megfelelő!</div>
-    {% endif %}
-
-    <a class="btn btn-info" href="{{ path('registration') }}">Nincs még fiókom, regisztrálok!</a>
 
 {% endblock %}

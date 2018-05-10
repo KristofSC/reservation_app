@@ -2,7 +2,7 @@
 
     <span>Rendelő: <span class="infoBox">{{ surgery }}</span></span>
     <span>Nap:  <span class="infoBox">{{ date }}</span>  </span>
-    {% if hour is defined %}
+    {% if hour is not null %}
     <span>Óra:<span class="infoBox">{{ hour }}</span></span>
     {% endif %}
     <br>
