@@ -25,3 +25,7 @@ registration:
 admin:
     path: /admin
     defaults: { _controller: "AppBundle:Default:adminTable" }
+
+paginator:
+    path: /admin-ajax-table
+    defaults: { _controller: "AppBundle:Default:paginator" }

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Security;
 
+use AppBundle\Entity\Patient;
 use AppBundle\Form\LoginType;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bridge\Doctrine\Security\User\EntityUserProvider;
@@ -10,6 +11,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 use Symfony\Component\Security\Core\User\InMemoryUserProvider;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -32,12 +34,18 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
      */
     protected $router;
 
+    /**
+     * @var UserPasswordEncoder
+     */
+    protected $encoder;
 
-    public function __construct(FormFactoryInterface $formFactory, EntityManager $em, RouterInterface $router)
+
+    public function __construct(FormFactoryInterface $formFactory, EntityManager $em, RouterInterface $router, UserPasswordEncoder $encoder)
     {
         $this->formFactory = $formFactory;
         $this->em = $em;
         $this->router = $router;
+        $this->encoder = $encoder;
     }
 
     protected function getLoginUrl()
@@ -82,7 +90,9 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function checkCredentials($credentials, UserInterface $user)
     {
-        if($credentials['password'] === $user->getPassword()){
+        if($user instanceof Patient && $this->encoder->isPasswordValid($user, $credentials['password'])){
+                return true;
+        } elseif ($credentials['password'] === $user->getPassword()) {
                 return true;
         }
         return false;

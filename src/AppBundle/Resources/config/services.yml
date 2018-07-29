@@ -32,7 +32,10 @@ services:
         class: "%app.reservation.manager.class%"
         arguments:
           index_1: 'AppBundle\Entity\Reservation'
-
+        calls:
+            - [setReservationFactory, ['@app.reservation.factory']]
+            - [setDateProvider, ['@app.date.provider']]
+            - [setRedis, ['@app.redis']]
 
     app.patient.factory:
         class: '%app.patient.factory.class%'
@@ -51,6 +54,7 @@ services:
             - '@form.factory'
             - '@doctrine.orm.entity_manager'
             - '@router'
+            - '@security.password_encoder'
 
     app.security.voter.delete_any_reservation:
         class: AppBundle\Security\Voter\DeleteAnyReservationVoter
@@ -64,3 +68,16 @@ services:
         class: AppBundle\Email\EmailSender
         arguments:
             - '@swiftmailer.mailer'
+
+    app.password.listener:
+        class: AppBundle\Doctrine\PasswordEncoderListener
+        arguments:
+            - '@security.password_encoder'
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    app.date.provider:
+        class: AppBundle\Provider\DateProvider
+
+    app.redis:
+        class: AppBundle\Cache\Redis

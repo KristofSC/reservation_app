@@ -25,12 +25,7 @@ class Reservation extends Entity
     /**
      * @var string
      */
-    private $surgery;
-
-    /**
-     * @var string
-     */
-    private $code;
+    private $description;
 
     /**
      * @var Patient
@@ -63,36 +58,25 @@ class Reservation extends Entity
         $this->hour = $hour;
     }
 
-    public function getSurgery(): string
-    {
-        return $this->surgery;
-    }
-
-    public function setSurgery(string $surgery): void
-    {
-        $this->surgery = $surgery;
-    }
-
-    public function getCode(): string
-    {
-        return $this->code;
-    }
-
-    public function setCode(string $code): void
-    {
-        $this->code = $code;
-    }
-
-    public function getPatient(): Patient
+    public function getPatient(): ?Patient
     {
         return $this->patient;
     }
 
-    public function setPatient(Patient $patient): void
+    public function setPatient(?Patient $patient): void
     {
         $this->patient = $patient;
     }
 
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
+    }
 
 
 }

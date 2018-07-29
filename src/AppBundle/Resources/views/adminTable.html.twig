@@ -22,10 +22,11 @@
 
 {% block adminTable %}
 
-    {% if days is defined %}
-    {% for day in days %}
-        <p>{{ day.hour }}</p>
-    {% endfor %}
+
+    {% if resultNumber is defined and fromDate is defined and toDate is defined and resultNumber >= 1 %}
+        <p id="admin-ajax-table" data-page = 1 data-page-count="{{ resultNumber }}" data-from-date = "{{ fromDate|date('Y-m-d') }}" data-to-date = "{{ toDate|date('Y-m-d') }}"></p>
+        <a id="admin-ajax-previous">Előző</a>
+        <a id="admin-ajax-next">Következő</a>
     {% endif %}
 
 {% endblock %}

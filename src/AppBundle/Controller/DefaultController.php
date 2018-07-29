@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Breadcrumb\BreadcrumbBuilder;
+use AppBundle\Email\EmailSender;
 use AppBundle\Entity\Patient;
 use AppBundle\Factory\PatientFactory;
 use AppBundle\Factory\ReservationFactory;
@@ -12,6 +13,7 @@ use AppBundle\Form\RegistrationType;
 use AppBundle\Form\SurgeryAndDateFormType;
 use AppBundle\Manager\PatientManager;
 use AppBundle\Manager\ReservationManager;
+use AppBundle\Provider\DateProvider;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -75,10 +77,10 @@ class DefaultController extends Controller
             ]);
         }
 
-        return $this->redirectToRoute('admin');
+        return $this->redirectToRoute('admin', ['page' => null]);
     }
 
-    public function adminTableAction(Request $request): Response
+    public function adminTableAction(Request $request, $page = null): Response
     {
         $dateRangeForm = $this->createForm(DateRangeForm::class, $this->createSurgeryChoices());
 
@@ -89,20 +91,48 @@ class DefaultController extends Controller
             $from = $dateRangeForm['from']->getData();
             $to = $dateRangeForm['to']->getData();
 
-            $days = $this->getReservationManager()->findByDateInterval($from, $to);
+            $reservations = $this->getReservationManager()->findByDatePeriod($from, $to, ['currentPage' => 1, 'pageSize' => 2]);
 
-            dump($days);
-            die;
+            dump($reservations);die;
 
             return $this->render('AppBundle::adminTable.html.twig', [
                 'dateRangeForm' => $dateRangeForm->createView(),
-                'days' => $days
+                'reservations' => $reservations,
+                'resultNumber' => count($reservations),
+                'fromDate' => $from,
+                'toDate' => $to
             ]);
         }
 
         return $this->render('AppBundle::adminTable.html.twig', [
             'dateRangeForm' => $dateRangeForm->createView(),
         ]);
+    }
+
+    public function paginatorAction(Request $request)
+    {
+        $page = $request->query->get('page');
+        $fromDate = $request->query->get('fromDate');
+        $toDate = $request->query->get('toDate');
+
+        $fromDateObj = new \DateTime($fromDate);
+        $toDateObj = new \DateTime($toDate);
+
+        $reservations = $this->getReservationManager()->findByDatePeriod($fromDateObj, $toDateObj, ['currentPage' => $page, 'pageSize' => 2,]);
+
+        list($beginDay, $endDay) = $this->getDateProvider()->calculateBeginAndEndOfSearchDay($fromDateObj, $toDateObj, 'last monday', 'next saturday');
+
+        $template = $this->renderView(
+            'AppBundle::adminAjaxTable.html.twig',
+            [
+                'page' => $page,
+                'reservations' => $reservations,
+                'beginDay' => $beginDay,
+                'endDay' => $endDay
+            ]
+        );
+
+        return new Response($template);
     }
 
     public function ajaxRouterAction(Request $request, $template): Response
@@ -256,7 +286,7 @@ class DefaultController extends Controller
         ]);
     }
 
-    public function reservationSuccessAction(Request $request, \Swift_Mailer $mailer): Response
+    public function reservationSuccessAction(Request $request): Response
     {
         $surgery = $request->getSession()->get('surgery');
         $date = new \DateTime($request->getSession()->get('date'));
@@ -267,25 +297,24 @@ class DefaultController extends Controller
 
         $this->getReservationManager()->doSaveEntity($reservation);
 
+        $sender = $this->getEmailSender();
 
-
-
-        $email = new \Swift_Message('Sikeres időpont foglalás!');
-
-        $email->setFrom('scytha87@gmail.com');
-        $email->setTo('scytha87@gmail.com');
-        $email->setBody(
-        $this->renderView(
+        $renderedView = $this->renderView(
             'AppBundle::successEmail.html.twig',
             [
                 'lastname' => $this->getUser()->getLastname(),
-                'firstName' => $this->getUser()->getFirstName()
+                'firstname' => $this->getUser()->getFirstName(),
+                'date' => $date->format('Y-m-d'),
+                'hour' => $hour
             ]
-        ),
-        'text/html'
-    );
+        );
 
-        $mailer->send($email);
+        $sender->send(
+            'scytha87@gmail.com',
+            'scytha87@gmail.com',
+            'Sikeres időpont foglalás',
+            $renderedView);
+
 
         return $this->render('AppBundle::reservationSuccess.html.twig', [
             'firstName' => $this->getUser()->getFirstname(),
@@ -380,6 +409,16 @@ class DefaultController extends Controller
                 case 'Sunday':
                     return 'Vasárnap';
         }
+    }
+
+    protected function getEmailSender(): EmailSender
+    {
+        return $this->container->get('app.email.sender');
+    }
+
+    protected function getDateProvider(): DateProvider
+    {
+        return $this->container->get('app.date.provider');
     }
 
 }

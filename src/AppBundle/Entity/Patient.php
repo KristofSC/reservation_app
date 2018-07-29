@@ -26,24 +26,9 @@ class Patient extends Entity implements EquatableInterface, UserInterface, \Seri
     private $lastname;
 
     /**
-     * @var int
-     */
-    private $ss_number;
-
-    /**
-     * @var string
-     */
-    private $phone_number;
-
-    /**
      * @var string
      */
     private $email;
-
-    /**
-     * @var string
-     */
-    private $address;
 
     /**
      * @var string
@@ -127,46 +112,6 @@ class Patient extends Entity implements EquatableInterface, UserInterface, \Seri
     }
 
     /**
-     * Set ssNumber
-     *
-     * @param integer $ssNumber
-     *
-     * @return Patient
-     */
-    public function setSsNumber($ss_number)
-    {
-        $this->ss_number = $ss_number;
-
-        return $this;
-    }
-
-    /**
-     * Get ssNumber
-     *
-     * @return int
-     */
-    public function getSsNumber()
-    {
-        return $this->ss_number;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPhoneNumber()
-    {
-        return $this->phone_number;
-    }
-
-    /**
-     * @param string $phone_number
-     */
-    public function setPhoneNumber(string $phone_number)
-    {
-        $this->phone_number = $phone_number;
-    }
-
-    /**
      * @return mixed
      */
     public function getEmail()
@@ -208,15 +153,6 @@ class Patient extends Entity implements EquatableInterface, UserInterface, \Seri
         $this->password = $password;
     }
 
-    public function getAddress()
-    {
-        return $this->address;
-    }
-
-    public function setAddress(string $address)
-    {
-        $this->address = $address;
-    }
 
     public function serialize()
     {

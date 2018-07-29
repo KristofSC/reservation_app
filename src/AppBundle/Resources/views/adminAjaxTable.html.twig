@@ -1,0 +1,13 @@
+{% block HAHAHA %}
+
+    <p>VALAMI</p>
+
+    <p>{{ page }}</p>
+
+    {% if reservations is defined %}
+        {% for reservation in reservations %}
+            <p>{{ reservation.day|date('Y-m-d') }}</p>
+        {% endfor %}
+    {% endif %}
+
+{% endblock %}

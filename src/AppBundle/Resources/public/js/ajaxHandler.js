@@ -52,6 +52,44 @@ $(document).ready(function() {
         $( '#success' ).fadeIn(2000);
     });
 
+    $(document).on('adminAjaxNext','#adminAjaxTable',function() {
+        $( '#success' ).load('ajax-router/reservation-success').hide();
+        $( '#success' ).fadeIn(1000);
+    });
+
+    $(document).on('click','#admin-ajax-previous',function() {
+        $('#admin-ajax-next').show();
+
+        var page = $('#admin-ajax-table').attr('data-page');
+        var fromDate = $('#admin-ajax-table').attr('data-from-date');
+        var toDate = $('#admin-ajax-table').attr('data-to-date');
+
+        $('#admin-ajax-table').attr('data-page', --page);
+
+        if(page <= 1){
+            $('#admin-ajax-previous').hide();
+        }
+
+        $( '#admin-ajax-table' ).load('admin-ajax-table' + '?page=' + page + '&fromDate=' + fromDate + '&toDate=' + toDate);
+    });
+
+    $(document).on('click','#admin-ajax-next',function() {
+
+        $('#admin-ajax-previous').show();
+
+        var page = $('#admin-ajax-table').attr('data-page');
+        var fromDate = $('#admin-ajax-table').attr('data-from-date');
+        var toDate = $('#admin-ajax-table').attr('data-to-date');
+
+        $('#admin-ajax-table').attr('data-page', ++page);
+
+        if(page == $('#admin-ajax-table').attr("data-page-count")){
+            $('#admin-ajax-next').hide();
+        }
+
+
+        $( '#admin-ajax-table' ).load('admin-ajax-table' + '?page=' + page + '&fromDate=' + fromDate + '&toDate=' + toDate);
+    });
 
 
 });

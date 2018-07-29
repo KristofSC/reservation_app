@@ -16,6 +16,7 @@ class Configuration implements ConfigurationInterface
         $this->addSurgerySection($rootNode);
         $this->addBreadcrumbSection($rootNode);
         $this->addDateLimit($rootNode);
+        $this->addHoursSection($rootNode);
 
         return $treeBuilder;
 
@@ -44,6 +45,20 @@ class Configuration implements ConfigurationInterface
                             ->useAttributeAsKey('breadcrumbElement')
                             ->info('Itt adhatók meg a breadcrumb elemei - a sorrend a hierarchiát jelenti!')
                             ->prototype('scalar')
+                    ->end()
+            ->end();
+
+    }
+
+    private function addHoursSection(ArrayNodeDefinition $rootNode)
+    {
+        // itt állítjuk össze a configs arrayt, a fa alapján:
+        $rootNode
+            ->children()
+                    ->arrayNode('hours')
+                    ->requiresAtLeastOneElement()
+                            ->info('A napokhoz tartozó órák száma!')
+                            ->prototype('integer')
                     ->end()
             ->end();
 

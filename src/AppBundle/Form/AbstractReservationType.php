@@ -39,21 +39,7 @@ abstract class AbstractReservationType extends AbstractType
                     'required' => true,
                     'label' => 'Keresztnév: ',
                 ])
-            ->add('SSNumber', TextType::class,
-                [
-                    'label' => 'TAJ kártya száma: ',
-                    'constraints' =>
-                        [
-                            new Constraints\SSNumber([
-                                'message' => "A szám formátuma a következő legyen: xxx-xxx-xxx!"
-                            ])
-                        ]
-                ])
-            ->add('phoneNumber', TextType::class,
-                [
-                    'required' => false,
-                    'label' => 'Telefonszám: '
-                ])
+
             ->add('email', EmailType::class,
                 [
                     'required' => true,

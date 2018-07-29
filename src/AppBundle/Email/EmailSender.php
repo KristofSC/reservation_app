@@ -14,23 +14,19 @@ class EmailSender
         $this->mailer = $mailer;
     }
 
-    public function send(string $template, array $parameters = null)
+    public function send(string $emailFrom, string $emailTo, string $message, $renderedView)
     {
 
-        $email = new \Swift_Message('Sikeres időpont foglalás!');
+        $email = new \Swift_Message($message);
 
-        $email->setFrom('scytha87@gmail.com');
-        $email->setTo('scytha87@gmail.com');
+        $email->setFrom($emailFrom);
+        $email->setTo($emailTo);
         $email->setBody(
-            $this->renderView(
-                'AppBundle::successEmail.html.twig',
-                [
-                    'lastname' => $this->getUser()->getLastname(),
-                    'firstName' => $this->getUser()->getFirstName()
-                ]
-            ),
+                $renderedView,
             'text/html'
         );
+
+        $this->mailer->send($email);
 
     }
 

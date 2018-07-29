@@ -4,6 +4,8 @@ namespace AppBundle\Form;
 
 
 use AppBundle\Entity\Patient;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -11,7 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class RegistrationType extends AbstractPatientDataType
+class RegistrationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -25,16 +27,6 @@ class RegistrationType extends AbstractPatientDataType
                 [
                     'label' => 'Vezetéknév'
                 ])
-            ->add('address', TextType::class,
-                [
-                    'label' => 'Lakcím',
-                    'required' => false
-                ])
-            ->add('phonenumber', TextType::class,
-                [
-                    'label' => 'Telefonszám:',
-                    'required' => false
-                ])
             ->add('password', RepeatedType::class,
                 [
                     'type' => PasswordType::class,
@@ -43,6 +35,16 @@ class RegistrationType extends AbstractPatientDataType
                         [ 'label' => 'Jelszó' ],
                     'second_options' =>
                         [ 'label' => 'Jelszó megerősítése']
+                ]
+            )
+            ->add('email', RepeatedType::class,
+                [
+                    'type' => EmailType::class,
+                    'invalid_message' => 'A megadott e-mail címeknek egyezniük kell!',
+                    'first_options' =>
+                        [ 'label' => 'E-mail cím' ],
+                    'second_options' =>
+                        [ 'label' => 'E-mail cím megerősítése']
                 ]
             )
             ->add('registrate', SubmitType::class,

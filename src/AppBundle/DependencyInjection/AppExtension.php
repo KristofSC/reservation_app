@@ -25,6 +25,7 @@ class AppExtension extends Extension
             $container->setParameter('app.surgeries', $config['surgeries']);
             $container->setParameter('app.breadcrumb', $config['breadcrumb']);
             $container->setParameter('app.dateLimit', $config['dateLimit']);
+            $container->setParameter('app.hours', $config['hours']);
         }
     }
 

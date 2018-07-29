@@ -1,7 +1,12 @@
 AppBundle\Entity\Reservation:
     type: entity
     table: reservation
+    uniqueConstraints:
+      reservation_day_and_hour:
+          columns: [ reservation_day, hour ]
+
     repositoryClass: AppBundle\Repository\ReservationRepository
+
     id:
         id:
             type: integer
@@ -13,10 +18,9 @@ AppBundle\Entity\Reservation:
             type: datetime
         hour:
             type: integer
-        surgery:
+        description:
             type: string
-        code:
-            type: string
+            nullable: true
     manyToOne:
       patient:
         targetEntity: Patient

@@ -1,0 +1,12 @@
+
+AppBundle\Entity\Reservation:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: [ reservation_day, hour ]
+            message: 'Már tartozik időpontfoglalás ehhez a naphoz és órához!'
+
+AppBundle\Entity\Patient:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: email
+            message: 'Ezzel az e-mail címmel regisztráltak már!'

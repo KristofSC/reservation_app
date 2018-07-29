@@ -12,28 +12,26 @@ use Doctrine\ORM\Query;
  */
 class ReservationRepository extends BaseRepository
 {
-    public function createReservationDayQuery(\DateTime $dateTime, string $surgery): Query
+    public function createReservationDayQuery(\DateTime $dateTime): Query
     {
         $formattedDate = $dateTime->format('"Y-m-d H:i:s"');
         $replacedDate = str_replace("\"", "", $formattedDate);
 
         return $this->createQueryBuilder('reservation_table')
-            ->where("reservation_table.reservation_day = '{$replacedDate}'")
-            ->andWhere("reservation_table.surgery = '{$surgery}'")
+            ->where('reservation_table.reservation_day = :date')
+
+            ->setParameter('date', $replacedDate)
             ->getQuery();
     }
 
-    public function createDateIntervalQuery( \DateTime $fromTime, \DateTime $toTime): Query
+    public function createDateIntervalQuery( array $days): Query
     {
-        $formattedFromDate = $fromTime->format('"Y-m-d H:i:s"');
-        $formattedToDate = $toTime->format('"Y-m-d H:i:s"');
-        $replacedFromDate = str_replace("\"", "", $formattedFromDate);
-        $replacedToDate = str_replace("\"", "", $formattedToDate);
-
-
         return $this->createQueryBuilder('reservation_table')
-            ->where("reservation_table.reservation_day >= '{$replacedFromDate}'")
-            ->andWhere("reservation_table.reservation_day <= '{$replacedToDate}'")
+            ->where('reservation_table.reservation_day IN (:days)')
+            ->orderBy('reservation_table.reservation_day', 'ASC')
+
+            ->setParameter('days', $days)
+
             ->getQuery();
     }
 

@@ -35,23 +35,11 @@
         <div class="jumbotron">
             <p>-soroló-</p>
             <p>az orvosi időpontfoglaló alkalmazás</p>
-            {% block search_box %}
-                {% if is_granted('ROLE_USER') or is_granted('ROLE_ADMIN') == false %}
-                <form id="searchForm" class="navbar-form pull-left" action="{{ 'code-result' }}" method="POST">
-                    <span class="input-group add-on">
-                        <input required="required" placeholder="Foglalási kód kereső" type="text" class="form-control" id="searchBox" name="searchInput">
-                        <span class="input-group-btn">
-                            <button class="btn btn-light" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-                        </span>
-                    </span>
-                </form>
-                {% endif %}
                 {% if is_granted('ROLE_USER') or is_granted('ROLE_ADMIN') %}
                     <span>
                         <a id="logout-box" class="btn btn-primary pull-right" href="{{ path('logout') }}">Kijelentkezés</a>
                     </span>
                 {% endif %}
-            {% endblock %}
         </div>
     <div class="row">
         <div class="col-md-8">
